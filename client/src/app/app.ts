@@ -1,8 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { HeaderComponent } from './shared/ui/header';
-import { LoginComponent } from './core/components/login';
-import { FooterComponent } from './shared/ui/footer';
+import { LoginComponent } from './features/auth/login';
+import { FooterComponent } from './shared/layout/footer';
+import { HeaderComponent } from './shared/layout/header';
 
 @Component({
   selector: 'app-root',
