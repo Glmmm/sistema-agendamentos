@@ -47,15 +47,19 @@ public class AuthController {
         return ResponseEntity.ok(token);
     }
 
-    @PostMapping("/register")
-    public ResponseEntity register(@RequestBody @Valid RegisterDTO form){
-        if(usuarioRepository.findByLogin(form.login()) != null){return ResponseEntity.badRequest().build();}
-
-        String encodedPass = new BCryptPasswordEncoder().encode(form.password());
-        Role role = roleRepository.findById(form.roleId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        Usuario usuario = new Usuario(form.login(), encodedPass, role);
-        usuarioRepository.save(usuario);
-
-        return ResponseEntity.ok(usuario);
+ @PostMapping("/register")
+public ResponseEntity register(@RequestBody @Valid RegisterDTO form) {
+    if (usuarioRepository.findByLogin(form.login()) != null) {
+        return ResponseEntity.badRequest().build();
     }
+    
+    String encodedPass = new BCryptPasswordEncoder().encode(form.password());
+    Role role = roleRepository.findById(form.roleId())
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cargo não encontrado"));
+            
+    Usuario usuario = new Usuario(form.login(), encodedPass, role);
+    usuarioRepository.save(usuario);
+
+    return ResponseEntity.ok(usuario);
+}
 }
