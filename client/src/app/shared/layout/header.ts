@@ -1,13 +1,15 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { Menu, MenuModule } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
 import { Router } from '@angular/router';
-import { LoginService } from '../../features/auth/login.service';
+import { AuthHelper } from '../../features/auth/auth.helper';
+import { DrawerModule } from 'primeng/drawer';
+import { LoginComponent } from '../../features/auth/login/login';
 @Component({
   selector: 'app-header',
-  imports: [CardModule, ButtonModule, MenuModule],
+  imports: [CardModule, ButtonModule, MenuModule, DrawerModule, LoginComponent],
   template: `
     <p-card class="border border-neutral-500 backdrop-blur-xl">
       <main class="flex justify-between">
@@ -15,17 +17,13 @@ import { LoginService } from '../../features/auth/login.service';
           <p>Olá, Guilherme</p>
           <a class="text-neutral-600">visualizar perfil ></a>
         </div>
-        <div>
-          <p-menu #menu [model]="items" [popup]="true" />
-          <p-button
-            (click)="menuToggle($event, menu)"
-            severity="primary"
-            variant="outlined"
-            icon="pi pi-bars"
-          />
-        </div>
+        <p-button type="button" outlined="true" (click)="visible.set(true)" icon="pi pi-bars" />
       </main>
     </p-card>
+
+    <p-drawer header="Menu" [(visible)]="visible" position="right">
+      <app-login></app-login>
+    </p-drawer>
   `,
   styles: `
     p-card {
@@ -35,8 +33,10 @@ import { LoginService } from '../../features/auth/login.service';
 })
 export class HeaderComponent {
   router = inject(Router);
-  auth = inject(LoginService);
+  auth = inject(AuthHelper);
   items: MenuItem[] = [];
+
+  visible = signal(false);
 
   menuToggle(event: any, menu: Menu) {
     menu.toggle(event);
@@ -45,28 +45,27 @@ export class HeaderComponent {
         label: 'Menu',
         items: [
           {
-            label: this.auth.logado() ? 'Logout' : 'Login',
-            icon: this.auth.logado() ? 'pi pi-sign-out' : 'pi pi-user',
-            command: () => {
-              this.auth.logado() ? this.auth.logout() : this.auth.changeDialogState();
-            },
+            label: this.auth.user() ? 'Logout' : 'Login',
+            icon: this.auth.user() ? 'pi pi-sign-out' : 'pi pi-user',
           },
           {
             label: 'Home',
             icon: 'pi pi-home',
-            command: () => {
-              this.router.navigate(['/home']);
-            },
+            routerLink: ['/home'],
           },
           {
             label: 'Dashboard',
             icon: 'pi pi-chart-bar',
-            command: () => {
-              this.router.navigate(['/dashboard']);
-            },
+            routerLink: ['/dashboard'],
           },
         ],
       },
     ];
+  }
+
+  logout() {
+    this.auth.setUser(null);
+    cookieStore.delete('token');
+    this.router.navigate(['']);
   }
 }

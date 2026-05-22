@@ -7,8 +7,8 @@ import { ButtonModule } from 'primeng/button';
   selector: 'app-page-not-found',
   styles: ``,
   template: `
-    <div class="flex flex-col justify-center">
-      <h1 class="text-6xl text-center text-red-500">404</h1>
+    <div class="flex flex-col justify-center my-8">
+      <h1 class="text-6xl text-center text-red-500 rounded bg-red-950">404...</h1>
       <p class="text-center px-96 p-8">
         de algum jeito você chegou aqui, mas não se preocupe, é só clicar no botão abaixo para
         voltar a página inicial :)
