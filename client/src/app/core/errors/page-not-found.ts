@@ -27,6 +27,6 @@ export class PageNotFoundComponent {
   router = inject(Router);
 
   public goHome() {
-    this.router.navigate(['/home']);
+    this.router.navigate(['/']);
   }
 }

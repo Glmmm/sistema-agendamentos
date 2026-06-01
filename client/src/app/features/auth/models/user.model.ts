@@ -1,8 +1,10 @@
-export interface IUser {
-  email: string;
-  nome: string;
-  telefone: string;
-  cnpj?: string;
-  endereco?: string;
-  logado: boolean;
+export interface IUserInfo {
+  token: string;
+  dados: {
+    email: string;
+    nome: string;
+    telefone: string;
+    cnpj: string;
+    endereco: string;
+  };
 }

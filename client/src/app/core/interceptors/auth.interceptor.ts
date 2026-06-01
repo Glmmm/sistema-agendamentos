@@ -1,21 +1,10 @@
 import { HttpInterceptorFn, HttpRequest, HttpHandlerFn } from '@angular/common/http';
 
-function getCookie(name: string): string | null {
-  const nameLenPlus = name.length + 1;
-  return (
-    document.cookie
-      .split(';')
-      .map((c) => c.trim())
-      .filter((cookie) => cookie.substring(0, nameLenPlus) === `${name}=`)
-      .map((cookie) => decodeURIComponent(cookie.substring(nameLenPlus)))[0] || null
-  );
-}
-
 export const authInterceptor: HttpInterceptorFn = (
   req: HttpRequest<unknown>,
   next: HttpHandlerFn,
 ) => {
-  const token = getCookie('token');
+  const token = getToken('token');
 
   if (token) {
     const clonedRequest = req.clone({
@@ -28,3 +17,7 @@ export const authInterceptor: HttpInterceptorFn = (
 
   return next(req);
 };
+
+function getToken(name: string): string | null {
+  return localStorage.getItem('token');
+}

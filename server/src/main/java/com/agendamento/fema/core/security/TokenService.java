@@ -1,6 +1,6 @@
 package com.agendamento.fema.core.security;
 
-import com.agendamento.fema.shared.models.entities.Usuario;
+import com.agendamento.fema.shared.entities.Usuario;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -10,9 +10,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.*;
 
 @Service
 public class TokenService   {
@@ -22,12 +20,12 @@ public class TokenService   {
 public String generateToken(Usuario user) {
     try{
         Algorithm algorithm = Algorithm.HMAC256(secret);
-        String token = JWT.create()
+        return JWT.create()
                 .withIssuer("auth")
                 .withSubject(user.getLogin())
                 .withExpiresAt(genExpirationDate())
                 .sign(algorithm);
-        return token;
+
     } catch (JWTCreationException exception) {
         throw new RuntimeException("Error while generating token", exception);
     }
@@ -45,7 +43,8 @@ public String validateToken(String token) {
     }
 }
     private Instant genExpirationDate() {
-        return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("+03:00"));
+        return ZonedDateTime.now(ZoneId.of("America/Sao_Paulo"))
+                .plusHours(2)
+                .toInstant();
     }
-
 }

@@ -1,115 +1,140 @@
-Aqui está uma proposta detalhada de milestones (marcos de entrega) e tarefas, organizada do setup inicial até o deploy em produção. Esta estrutura foca em construir o sistema de forma incremental, garantindo que o back-end forneça a base necessária antes que o front-end em Angular consuma os dados.
+Aqui está o roteiro de desenvolvimento aprimorado. O arquivo `steps.md` foi reestruturado para mapear diretamente os Casos de Uso (UCs) detalhados nos documentos de requisitos, garantindo que nenhuma funcionalidade exigida fique de fora.
+
+A stack tecnológica foi mantida com Angular (utilizando Tailwind e PrimeNG para componentes de interface) no front-end e Spring Boot no back-end.
+
+---
 
 ### Fase 1: Fundação e Infraestrutura (Setup Inicial)
 
-O objetivo desta fase é deixar os ambientes de desenvolvimento prontos, integrados e padronizados.
+O objetivo desta fase é deixar os ambientes de desenvolvimento prontos, integrados e padronizados para suportar os casos de uso.
 
-- [ ] **Modelagem do Banco de Dados:** Refinar o Diagrama Entidade-Relacionamento (ER) com todos os campos e relações exatas.
-- [ ] **Setup do Back-end (Spring Boot):**
-- Inicializar o projeto com as dependências centrais (Web, JPA, Security, PostgreSQL).
-- Configurar a estrutura de pastas Package-by-Feature (como `auth`, `catalog`, `booking`).
-- Configurar o Flyway e criar a primeira _migration_ (V1) com as tabelas base.
-- Configurar variáveis de ambiente e perfil de desenvolvimento (`application-dev.yml`).
+* [ ] **Modelagem do Banco de Dados:** Refinar o Diagrama Entidade-Relacionamento (ER) contemplando tabelas para Clientes, Administradores, Serviços, Profissionais, Agendamentos, Avaliações e Informações do Negócio.
+* [ ] **Setup do Back-end (Spring Boot):**
+* Inicializar o projeto com as dependências centrais (Web, JPA, Security, PostgreSQL).
+* Configurar a estrutura de pastas Package-by-Feature (como `auth`, `catalog`, `booking`, `reports`).
+* Configurar o Flyway e criar a primeira *migration* (V1) com as tabelas base.
+* Configurar variáveis de ambiente e perfil de desenvolvimento (`application-dev.yml`).
 
-- [ ] **Setup do Front-end (Angular):**
-- Criar o workspace do Angular.
-- Configurar o Tailwind CSS para a estilização dos componentes.
-- Estabelecer a arquitetura de pastas do front-end (ex: `core`, `shared`, `features`).
 
-- [ ] **Integração Inicial:** Criar um endpoint genérico de "Health Check" no Spring e consumi-lo no Angular para validar o CORS e a comunicação.
+* [ ] **Setup do Front-end (Angular):**
+* Criar o workspace do Angular.
+* Configurar o Tailwind CSS e biblioteca de componentes (como PrimeNG) para estilização ágil e responsiva.
+* Estabelecer a arquitetura de pastas do front-end dividindo entre Área do Cliente (App) e Gestão (Painel Admin).
+
+
+* [ ] **Integração Inicial:** Criar um endpoint genérico de "Health Check" no Spring e consumi-lo no Angular para validar o CORS e a comunicação.
 
 ---
 
 ### Fase 2: Segurança e Autenticação (Identidade)
 
-Garantir que os usuários e administradores possam acessar o sistema com segurança.
+Garantir o acesso seguro separando a Área do Cliente do Painel Administrativo.
 
-- [ ] **Back-end (API):**
-- Criar as entidades de `User` e a enumeração de `Role` (ADMIN, CLIENT).
-- Implementar a configuração do Spring Security.
-- Desenvolver o serviço de geração e validação de tokens JWT.
-- Criar os endpoints `/api/auth/login` e `/api/auth/register`.
+* [ ] **Back-end (API):**
+* Criar a entidade base `User` e a hierarquia/permissões (`Role`: ADMIN, CLIENT).
+* Implementar o Spring Security com filtro de geração e validação de tokens JWT.
+* Desenvolver os endpoints genéricos de `/api/auth/login` e `/api/auth/register`.
 
-- [ ] **Front-end (Angular):**
-- Desenvolver as telas de Cadastro e Login baseadas nos wireframes.
-- Implementar serviços HTTP interceptors para anexar o token JWT nas requisições subsequentes.
-- Criar as _Route Guards_ para proteger as rotas que exigem autenticação.
 
----
+* [ ] **Front-end (Área do Cliente e Painel Admin):**
+* **[UC01] Cadastrar Conta:** Desenvolver o formulário de cadastro de novos clientes.
+* **[UC02] Fazer Login:** Criar tela de autenticação unificada que redireciona o Cliente para o App e o Admin para o Dashboard.
+* Implementar HTTP Interceptors no Angular para anexar o JWT nas requisições.
+* Criar *Route Guards* protegendo rotas específicas de Cliente e de Admin.
 
-### Fase 3: Catálogo e Gestão do Negócio (Cadastros)
 
-Permitir que o administrador popule a plataforma com os serviços oferecidos e os profissionais disponíveis.
-
-- [ ] **Back-end (API):**
-- Criar _migrations_ e entidades para `Service`, `Professional` e a tabela de relacionamento entre eles.
-- Desenvolver os endpoints CRUD completos (Create, Read, Update, Delete) para esses módulos.
-- Implementar paginação e filtros nas consultas de listagem.
-
-- [ ] **Front-end (Painel Admin):**
-- Desenvolver formulários reativos no Angular para cadastro e edição de profissionais e serviços.
-- Criar tabelas de listagem para gerenciamento visual desses dados.
-
-- [ ] **Front-end (Visão Cliente):**
-- Desenvolver a "Home" do aplicativo, consumindo a API para exibir os serviços e profissionais cadastrados de forma dinâmica.
 
 ---
 
-### Fase 4: O Motor de Agendamento (Core do Sistema)
+### Fase 3: Gestão do Negócio e Catálogo (Cadastros)
 
-Esta é a fase mais complexa, onde a regra de negócios principal é implementada.
+Permitir que o administrador configure a base da plataforma e que o cliente possa explorar essas informações.
 
-- [ ] **Back-end (API):**
-- Definir a entidade `Booking` e os status possíveis (Pendente, Confirmado, Concluído, Cancelado).
-- Desenvolver a lógica de verificação de disponibilidade (impedir _double-booking_ para o mesmo profissional no mesmo horário).
-- Criar endpoints para buscar horários livres, registrar um agendamento e alterar o status de um agendamento.
+* [ ] **Back-end (API):**
+* Criar *migrations* e entidades para `BusinessInfo`, `Service`, `Professional`.
+* Desenvolver os endpoints CRUD completos para as informações do local, serviços oferecidos e equipe.
 
-- [ ] **Front-end (Visão Cliente):**
-- Implementar a interface de seleção de data (calendário) e exibição de horários dinâmicos.
-- Desenvolver o fluxo de "Finalizar Reserva".
-- Criar a tela de "Meus Agendamentos" listando o histórico do usuário logado e opção de cancelamento.
 
-- [ ] **Front-end (Painel Admin):**
-- Desenvolver a visualização da agenda do dia/semana para o negócio.
-- Implementar botões de ação rápida para confirmar ou rejeitar solicitações de clientes.
+* [ ] **Front-end (Painel Admin):**
+* **[UC08/09/10] Gerenciar Informações, Serviços e Profissionais:** Criar interfaces para o administrador realizar o CRUD dos dados do negócio, montar o catálogo de serviços e cadastrar os profissionais da equipe.
 
----
 
-### Fase 5: Feedbacks e Relatórios (Inteligência do Negócio)
+* [ ] **Front-end (Área do Cliente):**
+* **[UC03] Explorar Serviços e Profissionais:** Desenvolver a "Home" do aplicativo, consumindo a API de forma pública ou autenticada para exibir o catálogo dinâmico para os clientes.
 
-Adicionar valor à plataforma fechando o ciclo de atendimento e provendo métricas.
 
-- [ ] **Back-end (API):**
-- Criar entidade e endpoints para `Feedback` (vinculados a um agendamento concluído).
-- Desenvolver serviços de consulta agregada usando _queries_ otimizadas (JPQL ou nativas) para calcular: Total Arrecadado, Clientes Frequentes e Serviços mais Populares.
-
-- [ ] **Front-end (Visão Cliente):**
-- Adicionar o modal/tela de avaliação para serviços concluídos (estrelas e comentários).
-
-- [ ] **Front-end (Painel Admin):**
-- Desenvolver o Dashboard inicial com gráficos e indicadores de desempenho baseados nos endpoints de relatórios.
-- Implementar a visualização e moderação de avaliações recebidas.
 
 ---
 
-### Fase 6: Refinamento e DevSecOps (Pre-Produção)
+### Fase 4: Motor de Agendamento e Gestão de Agenda (Core do Sistema)
 
-Garantir a estabilidade, performance e preparar o empacotamento do sistema.
+Implementação da regra de negócio central, da configuração da grade de horários até a efetivação da reserva.
 
-- [ ] **Testes e Qualidade:**
-- Escrever testes unitários no Spring Boot, focando especialmente nas regras de bloqueio de horário (`BookingService`).
-- Testar responsividade do layout no Angular (Desktop vs. Mobile).
+* [ ] **Back-end (API):**
+* Definir a entidade `Booking` e o fluxo de status (Pendente, Confirmado, Cancelado, Concluído).
+* Desenvolver a lógica de disponibilidade e prevenção de conflitos de horário (*double-booking*).
+* Criar endpoints de consulta de grade de horários, registro, atualização de status e cancelamento.
 
-- [ ] **Infraestrutura e Deploy:**
-- Escrever `Dockerfiles` para conteinerizar a aplicação Spring Boot e o build do Angular.
-- Configurar um arquivo `docker-compose.yml` para orquestrar o banco de dados e os containers facilmente.
-- Configurar um servidor reverso (como Nginx) para expor as portas corretamente e gerenciar certificados SSL caso avance para um domínio público.
-- (Opcional) Configurar um pipeline básico de CI/CD (ex: GitHub Actions) para compilar e testar o código a cada _commit_ na _main_.
+
+* [ ] **Front-end (Painel Admin):**
+* **[UC11] Configurar Horários Disponíveis:** Criar a interface para o Admin definir dias de trabalho, horários de início/fim e intervalos para profissionais e serviços.
+* **[UC12] Confirmar/Cancelar Agendamentos:** Desenvolver a visão de calendário gerencial para aprovar, rejeitar ou cancelar solicitações pendentes.
+
+
+* [ ] **Front-end (Área do Cliente):**
+* **[UC04] Agendar Horário:** Criar o fluxo *wizard* onde o cliente seleciona o serviço, o profissional e um horário da grade disponível (gerada via UC11).
+* **[UC05] Acompanhar/Cancelar Meus Agendamentos:** Desenvolver a listagem do histórico do cliente logado, permitindo o cancelamento de eventos futuros.
+
+
+
+---
+
+### Fase 5: Inteligência de Negócio e Feedbacks (Pós-Atendimento)
+
+Fechamento do ciclo de atendimento com avaliações e visualização de métricas de desempenho.
+
+* [ ] **Back-end (API):**
+* Criar entidade `Feedback` vinculada a agendamentos com status "Concluído".
+* Desenvolver endpoints de relatórios utilizando agregações e *queries* otimizadas (JPQL/SQL nativo).
+
+
+* [ ] **Front-end (Área do Cliente):**
+* **[UC06] Avaliar Serviço:** Desenvolver modal para submissão de nota (estrelas) e comentários após o serviço prestado.
+
+
+* [ ] **Front-end (Painel Admin):**
+* **[UC13] Gerenciar Feedbacks:** Criar a tela de moderação para que o Admin leia, responda ou oculte avaliações na plataforma.
+* **[UC14/15/16] Visualizar Relatórios:** Construir o Dashboard analítico consumindo a API para exibir:
+* Faturamento financeiro (Total Arrecadado).
+* Métricas de retenção (Clientes Frequentes).
+* Popularidade do catálogo (Serviços mais agendados).
+
+
+
+
+
+---
+
+### Fase 6: Refinamento e DevSecOps (Pré-Produção)
+
+Garantir estabilidade, responsividade e preparar o empacotamento.
+
+* [ ] **Testes e Qualidade:**
+* Escrever testes unitários no Spring Boot focando nos serviços críticos, especialmente o `BookingService` (impedimento de choques de agenda).
+* Testar a responsividade do layout em Angular simulando dispositivos mobile (Área do Cliente) e desktops (Painel Admin).
+
+
+* [ ] **Infraestrutura e Deploy:**
+* Escrever `Dockerfiles` otimizados (multi-stage) para compilação do Spring Boot e do Angular.
+* Criar arquivo `docker-compose.yml` integrando o PostgreSQL, o Back-end e o Front-end.
+* Configurar proxy reverso (Nginx) para roteamento das requisições `/api` e servir os arquivos estáticos do front-end.
+
+
 
 ---
 
 ### Fase 7: Lançamento (Produção)
 
-- [ ] Executar as _migrations_ finais no banco de dados de produção.
-- [ ] Realizar um _smoke test_ geral no ambiente em nuvem para validar fluxos ponta a ponta.
-- [ ] Iniciar a operação do sistema para os primeiros usuários reais..,
+* [ ] **Execução Final:** Rodar as *migrations* finais no banco de produção.
+* [ ] **Validação End-to-End:** Realizar *smoke tests* simulando todos os 16 UCs no ambiente em nuvem para validar o fluxo ponta a ponta.
+* [ ] **Go-live:** Iniciar a operação para os primeiros usuários reais.

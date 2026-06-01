@@ -4,7 +4,6 @@ import { DividerModule } from 'primeng/divider';
 @Component({
   imports: [DividerModule],
   selector: 'app-home',
-  template: ``,
-  styles: ``,
+  templateUrl: './home.html',
 })
 export class HomeComponent {}

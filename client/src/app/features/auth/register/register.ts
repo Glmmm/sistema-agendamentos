@@ -4,11 +4,10 @@ import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
-import { AuthHelper } from '../auth.helper';
-import { registerClientForm, registerProviderForm } from './models/register.form';
-import { AuthService } from '../../../core/services/auth.service';
-import { MessageService } from 'primeng/api';
+import { registerClientForm, registerProviderForm } from '../models/register.form';
 import { InputMaskModule } from 'primeng/inputmask';
+import { RouterLink } from '@angular/router';
+import { AuthHelper } from '../auth.helper';
 
 @Component({
   selector: 'app-register',
@@ -20,12 +19,12 @@ import { InputMaskModule } from 'primeng/inputmask';
     InputMaskModule,
     ButtonModule,
     CardModule,
+    RouterLink,
   ],
   template: `
-    <div class="flex m-8">
-      <img class="w-full h-full bg-amber-50" alt="Registro" />
-      <div class="w-full">
-        <div class="flex flex-col gap-4 mb-4 text-center">
+    <div class="w-full flex flex-col justify-center items-center">
+      <div class="w-1/2 px-8">
+        <div class="flex flex-col gap-4 mb-4  text-center">
           <span>Selecione o tipo de cadastro</span>
           <div class="flex gap-4 justify-center">
             <div class="px-8">
@@ -106,7 +105,12 @@ import { InputMaskModule } from 'primeng/inputmask';
                 <small class="text-red-500"> A senha deve conter no mínimo 8 caracteres. </small>
               }
             </div>
-
+            <p class="text-center text-sm text-neutral-400  ">
+              já possui conta?
+              <a class="text-primary cursor-pointer hover:underline" [routerLink]="['/auth/login']"
+                >faça login aqui :)</a
+              >
+            </p>
             <div class="flex justify-end gap-2">
               <p-button label="Criar Conta" type="submit" [disabled]="form.invalid" />
             </div>
@@ -117,38 +121,17 @@ import { InputMaskModule } from 'primeng/inputmask';
   `,
 })
 export class RegisterComponent {
-  service = inject(AuthService);
-  toast = inject(MessageService);
-  userType = signal<0 | 2 | 3>(0);
+  auth = inject(AuthHelper);
+  userType = signal<2 | 3>(3);
 
-  form!: FormGroup;
+  form: FormGroup = registerClientForm();
 
   setUserType(type: 2 | 3) {
     this.userType.set(type);
     this.form = type === 3 ? registerClientForm() : registerProviderForm();
-    this.form.get('roleId')?.setValue(type);
   }
 
   register() {
-    if (this.form.valid) {
-      this.service.register(this.form.value).subscribe({
-        next: (res) => {
-          this.toast.add({
-            severity: 'success',
-            summary: 'Sucesso',
-            detail: 'Usuário cadastrado com sucesso!',
-          });
-        },
-        error: (err) => {
-          this.toast.add({
-            severity: 'error',
-            summary: 'Erro',
-            detail: 'Erro ao registrar usuário.',
-          });
-        },
-      });
-    } else {
-      this.form.markAllAsTouched();
-    }
+    this.auth.register(this.form);
   }
 }

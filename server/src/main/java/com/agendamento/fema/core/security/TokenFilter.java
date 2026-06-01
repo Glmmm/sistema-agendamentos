@@ -1,7 +1,6 @@
 package com.agendamento.fema.core.security;
 
-import com.agendamento.fema.features.auth.repositories.UsuarioRepository;
-import com.agendamento.fema.shared.models.entities.Usuario;
+import com.agendamento.fema.shared.repositories.UsuarioRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
