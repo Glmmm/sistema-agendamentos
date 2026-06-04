@@ -22,9 +22,7 @@ public class ProfissionalController {
 
     @GetMapping("/empresa/{empresaId}")
     @PreAuthorize("hasAnyRole('ADMIN', 'CLIENTE')")
-    public ResponseEntity<?> listarPorEmpresa(
-            @AuthenticationPrincipal Usuario usuarioLogado,
-            @PathVariable Long empresaId) {
+    public ResponseEntity<?> listarPorEmpresa(@PathVariable Long empresaId) {
         try {
             List<ProfissionalResponseDTO> profissionais = profissionalService.listarPorEmpresa(empresaId);
             return ResponseEntity.ok(profissionais);
@@ -48,7 +46,7 @@ public class ProfissionalController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> cadastrar(@AuthenticationPrincipal Usuario usuarioLogado, @RequestBody ProfissionalDTO dto) {
         ProfissionalResponseDTO novoProfissional = profissionalService.cadastrar(usuarioLogado.getId(), dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(novoProfissional);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/{id}")
@@ -56,7 +54,7 @@ public class ProfissionalController {
     public ResponseEntity<?> atualizar(@AuthenticationPrincipal Usuario usuarioLogado, @PathVariable Long id, @RequestBody ProfissionalDTO dto) {
         try {
             ProfissionalResponseDTO atualizado = profissionalService.atualizar(usuarioLogado.getId(), id, dto);
-            return ResponseEntity.ok(atualizado);
+            return ResponseEntity.ok().build();
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         }
@@ -67,7 +65,7 @@ public class ProfissionalController {
     public ResponseEntity<?> deletar(@AuthenticationPrincipal Usuario usuarioLogado, @PathVariable Long id) {
         try {
             profissionalService.deletar(usuarioLogado.getId(), id);
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok().build();
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         }

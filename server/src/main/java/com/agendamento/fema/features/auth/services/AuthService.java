@@ -1,7 +1,7 @@
 package com.agendamento.fema.features.auth.services;
 
-import com.agendamento.fema.features.auth.models.dtos.ClienteDTO;
-import com.agendamento.fema.features.auth.models.dtos.EmpresaDTO;
+import com.agendamento.fema.shared.models.ClienteDTO;
+import com.agendamento.fema.shared.models.EmpresaDTO;
 import com.agendamento.fema.features.auth.models.dtos.UserInfoResponseDTO;
 import com.agendamento.fema.shared.entities.Cliente;
 import com.agendamento.fema.shared.entities.Empresa;
@@ -31,25 +31,25 @@ public class AuthService implements UserDetailsService {
         return usuarioRepository.findByLogin(username);
     }
 
-        public UserInfoResponseDTO obterInformacoesDoUsuario(Usuario usuario) {
-            String roleName = usuario.getRole().getName().toString();
+    public UserInfoResponseDTO obterInformacoesDoUsuario(Usuario usuario) {
+        String roleName = usuario.getRole().getName().toString();
 
-            if (roleName.equals("ROLE_CLIENTE")) {
-                Cliente cliente = clienteRepository.findByUsuario(usuario)
-                        .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+        if (roleName.equals("ROLE_CLIENTE")) {
+            Cliente cliente = clienteRepository.findByUsuario(usuario)
+                    .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
 
-                ClienteDTO clienteDTO = new ClienteDTO(cliente.getId(), cliente.getNome(), cliente.getTelefone(), usuario.getLogin());
-                return new UserInfoResponseDTO("CLIENTE", clienteDTO);
-            }
-
-            if (roleName.equals("ROLE_EMPRESA") || roleName.equals("ROLE_ADMIN")) {
-                Empresa empresa = empresaRepository.findByUsuario(usuario)
-                        .orElseThrow(() -> new RuntimeException("Empresa não encontrada"));
-
-                EmpresaDTO empresaDTO = new EmpresaDTO(empresa.getId(), empresa.getNome(), empresa.getCnpj(), empresa.getTelefone(), empresa.getEndereco(), usuario.getLogin());
-                return new UserInfoResponseDTO("EMPRESA", empresaDTO);
-            }
-
-            throw new IllegalArgumentException("Tipo de usuário inválido");
+            ClienteDTO clienteDTO = new ClienteDTO(cliente.getId(), cliente.getNome(), cliente.getTelefone(), usuario.getLogin());
+            return new UserInfoResponseDTO(usuario.getRole().getName().toString(), clienteDTO);
         }
+
+        if (roleName.equals("ROLE_EMPRESA") || roleName.equals("ROLE_ADMIN")) {
+            Empresa empresa = empresaRepository.findByUsuario(usuario)
+                    .orElseThrow(() -> new RuntimeException("Empresa não encontrada"));
+
+            EmpresaDTO empresaDTO = new EmpresaDTO(empresa.getId(), empresa.getNome(), empresa.getCnpj(), empresa.getTelefone(), empresa.getEndereco(), usuario.getLogin());
+            return new UserInfoResponseDTO(usuario.getRole().getName().toString(), empresaDTO);
+        }
+
+        throw new IllegalArgumentException("Tipo de usuário inválido");
     }
+}

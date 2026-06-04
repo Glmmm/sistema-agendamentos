@@ -4,7 +4,7 @@ import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
-import { registerClientForm, registerProviderForm } from '../models/register.form';
+import { registerClientForm, registerProviderForm } from '../models/forms/register.form';
 import { InputMaskModule } from 'primeng/inputmask';
 import { RouterLink } from '@angular/router';
 import { AuthHelper } from '../auth.helper';

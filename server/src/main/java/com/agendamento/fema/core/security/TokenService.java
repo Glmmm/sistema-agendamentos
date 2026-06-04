@@ -44,7 +44,7 @@ public String validateToken(String token) {
 }
     private Instant genExpirationDate() {
         return ZonedDateTime.now(ZoneId.of("America/Sao_Paulo"))
-                .plusHours(2)
+                .plusHours(4)
                 .toInstant();
     }
 }

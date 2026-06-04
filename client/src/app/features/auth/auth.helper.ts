@@ -1,6 +1,5 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { AuthService } from '../../core/services/auth.service';
-import { IUserInfo } from './models/user.model';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { FormGroup } from '@angular/forms';
@@ -13,10 +12,8 @@ export class AuthHelper {
   toast = inject(MessageService);
   router = inject(Router);
 
-  user = signal<IUserInfo | null>(null);
-
   login(form: FormGroup) {
-    if (form.valid && this.store.token == null) {
+    if (form.valid) {
       this.service.login(form.value).subscribe({
         next: (res: any) => {
           this.store.token = res.token;
@@ -28,12 +25,16 @@ export class AuthHelper {
         },
       });
     } else {
-      this.toast.add({ severity: 'error', summary: 'Erro', detail: 'Preencha todos os campos' });
+      this.toast.add({
+        severity: 'error',
+        summary: 'Erro',
+        detail: 'Formulário inválido, preencha todos os campos',
+      });
     }
   }
 
   logout() {
-    this.user.set(null);
+    this.store.user.set(null);
     this.store.clearToken();
     this.router.navigate(['/auth/login']);
   }
@@ -65,7 +66,7 @@ export class AuthHelper {
   getUserInfo() {
     this.service.getUserInfo().subscribe({
       next: (res: any) => {
-        this.user.set(res);
+        this.store.user.set(res);
       },
       error: (err) => {
         this.logout();

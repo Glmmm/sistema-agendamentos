@@ -1,10 +1,11 @@
 export interface IUserInfo {
-  token: string;
-  dados: {
-    email: string;
+  type: string;
+  data: {
+    id: number;
     nome: string;
     telefone: string;
-    cnpj: string;
-    endereco: string;
+    login: string;
+    cpnj?: string;
+    endereco?: string;
   };
 }

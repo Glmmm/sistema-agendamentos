@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin/servicos")
+@RequestMapping("/admin/tipos-servicos")
 @PreAuthorize("hasRole('ADMIN')")
 @RequiredArgsConstructor
 public class TipoServicoController {
@@ -23,7 +23,7 @@ public class TipoServicoController {
 
     @GetMapping("/profissional/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'CLIENTE')")
-    public ResponseEntity<?> listarPorProfissional(@AuthenticationPrincipal Usuario usuarioLogado, @PathVariable Long id) {
+    public ResponseEntity<?> listarPorProfissional(@PathVariable Long id) {
         List<TipoServicoResponseDTO> servicos = tipoServicoService.listarPorProfissional(id);
         return ResponseEntity.ok(servicos);
     }

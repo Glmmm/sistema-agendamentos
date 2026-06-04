@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ToastModule } from 'primeng/toast';
-import { HeaderComponent } from './features/home/layout/header';
-import { FooterComponent } from './features/home/layout/footer';
+import { HeaderComponent } from './features/home/components/header';
+import { FooterComponent } from './features/home/components/footer';
 
 @Component({
   selector: 'app-root',

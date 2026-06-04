@@ -1,10 +1,24 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal, effect } from '@angular/core';
+import { IUserInfo } from './models/user.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthStore {
   private _token: string | null = null;
+
+  public user = signal<IUserInfo | null>(JSON.parse(localStorage.getItem('user') || 'null'));
+
+  constructor() {
+    effect(() => {
+      const currentUser = this.user();
+      if (currentUser) {
+        localStorage.setItem('user', JSON.stringify(currentUser));
+      } else {
+        localStorage.removeItem('user');
+      }
+    });
+  }
 
   get token(): string | null {
     if (!this._token) {

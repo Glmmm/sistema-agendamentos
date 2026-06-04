@@ -4,17 +4,17 @@ import { inject, Injectable } from '@angular/core';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private http = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:8080/api/auth';
+  private readonly authUrl = 'http://localhost:8080/api/auth';
 
   public login(form: any) {
-    return this.http.post(`${this.apiUrl}/login`, form);
+    return this.http.post(`${this.authUrl}/login`, form);
   }
 
   public register(form: any) {
-    return this.http.post(`${this.apiUrl}/register`, form);
+    return this.http.post(`${this.authUrl}/register`, form);
   }
 
   public getUserInfo() {
-    return this.http.get(`${this.apiUrl}/user-info`);
+    return this.http.get(`${this.authUrl}/user-info`);
   }
 }

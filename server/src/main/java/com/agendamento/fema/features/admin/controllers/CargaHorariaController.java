@@ -4,7 +4,6 @@ package com.agendamento.fema.features.admin.controllers;
 import com.agendamento.fema.features.admin.models.dtos.CargaHorariaDTO;
 import com.agendamento.fema.features.admin.models.dtos.CargaHorariaResponseDTO;
 import com.agendamento.fema.features.admin.services.CargaHorariaService;
-import com.agendamento.fema.shared.entities.CargaHoraria;
 import com.agendamento.fema.shared.entities.Usuario;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
