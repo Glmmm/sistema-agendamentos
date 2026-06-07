@@ -4,7 +4,7 @@ import com.agendamento.fema.shared.enums.DiasSemana;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
@@ -21,7 +21,6 @@ public class CargaHoraria {
     @Enumerated(EnumType.STRING)
     private DiasSemana diaSemana;
 
-    private LocalDateTime dataAgendamento;
     private LocalTime horaInicio;
     private LocalTime horaFim;
     private Integer intervaloAtendimento;

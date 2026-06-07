@@ -1,4 +1,135 @@
-<div class="w-full h-full flex flex-col justify-center items-center">
-  <h1 class="text-4xl font-bold mb-4">Serviços</h1>
-  <p class="text-lg text-gray-600">Consulte os tipos de serviços oferecidos!</p>
+<p-dialog
+  [(visible)]="displayDialog"
+  [modal]="true"
+  [header]="isEditing ? 'Editar Serviço' : 'Adicionar Serviço'"
+>
+  <form
+    id="servicoForm"
+    [formGroup]="form"
+    (ngSubmit)="salvarServico()"
+    class="mb-6 p-4 rounded shadow-sm w-full max-w-md mx-auto"
+  >
+    <div class="flex flex-col gap-4">
+      <div>
+        <label for="nome" class="block text-sm font-medium text-gray-400 mb-1"
+          >Nome do Serviço</label
+        >
+        <input
+          pInputText
+          id="nome"
+          formControlName="nome"
+          placeholder="Ex: Corte de Cabelo Masculino"
+          class="w-full"
+          pSize="small"
+        />
+      </div>
+
+      <div>
+        <label for="preco" class="block text-sm font-medium text-gray-400 mb-1">Preço</label>
+        <p-inputNumber
+          id="preco"
+          class="w-full"
+          formControlName="preco"
+          mode="currency"
+          currency="BRL"
+          placeholder="R$ 0,00"
+          size="small"
+        />
+      </div>
+
+      <div>
+        <label for="descricao" class="block text-sm font-medium text-gray-400 mb-1"
+          >Descrição</label
+        >
+        <textarea
+          pTextarea
+          id="descricao"
+          formControlName="descricao"
+          placeholder="Detalhes sobre o serviço prestado..."
+          rows="3"
+          class="w-full resize-none p-inputtext-sm"
+        ></textarea>
+      </div>
+    </div>
+  </form>
+
+  <ng-template pTemplate="footer">
+    <div class="flex justify-end gap-2">
+      <p-button (click)="displayDialog.set(false)" label="Cancelar" outlined="true"></p-button>
+      <button
+        pButton
+        label="Salvar"
+        type="submit"
+        form="servicoForm"
+        [disabled]="form.invalid"
+      ></button>
+    </div>
+  </ng-template>
+</p-dialog>
+
+<div class="w-full flex flex-col">
+  <div class="flex justify-end">
+    <p-button
+      (click)="abrirModalCadastro()"
+      icon="pi pi-plus"
+      size="small"
+      label="Adicionar Serviço"
+    >
+    </p-button>
+  </div>
+
+  <div class="flex flex-wrap gap-4">
+    @for (item of servicos(); track item.id) {
+      <p-card class="w-3xs">
+        <div class="flex flex-col gap-4 p-2 justify-between">
+          <div class="flex justify-between items-center">
+            <p class="font-bold text-xl">{{ item.nome }}</p>
+            <div class="flex justify-end items-center">
+              <p-popover #op>
+                <ng-template #content>
+                  <div class="flex flex-col gap-2">
+                    <p-button
+                      (click)="editarServico(item); op.toggle($event)"
+                      size="small"
+                      text="true"
+                      label="Editar"
+                      icon="pi pi-pencil"
+                    ></p-button>
+                    <p-button
+                      (click)="excluirServico(item.id); op.toggle($event)"
+                      size="small"
+                      text="true"
+                      label="Deletar"
+                      icon="pi pi-trash"
+                      severity="danger"
+                    ></p-button>
+                  </div>
+                </ng-template>
+              </p-popover>
+              <p-button
+                (click)="op.toggle($event)"
+                size="small"
+                text="true"
+                icon="pi pi-ellipsis-v"
+                outlined="true"
+              ></p-button>
+            </div>
+          </div>
+          <div class="flex flex-col gap-2">
+            <p class="text-sm wrap-break-word text-gray-400">
+              {{ item.descricao || 'Sem descrição cadastrada.' }}
+            </p>
+            <p class="text-end text-emerald-600 font-semibold whitespace-nowrap">
+              {{ item.preco | currency: 'BRL' : 'symbol' : '1.2-2' }}
+            </p>
+          </div>
+        </div>
+      </p-card>
+    } @empty {
+      <div class="w-full text-center p-12 rounded border border-dashed text-gray-400">
+        <i class="pi pi-info-circle text-2xl mb-2"></i>
+        <p>Nenhum serviço cadastrado para este profissional.</p>
+      </div>
+    }
+  </div>
 </div>

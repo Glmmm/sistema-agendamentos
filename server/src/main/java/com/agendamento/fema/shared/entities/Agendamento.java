@@ -3,6 +3,8 @@ package com.agendamento.fema.shared.entities;
 import com.agendamento.fema.shared.enums.StatusAgendamento;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
@@ -28,6 +30,7 @@ public class Agendamento {
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
+    private LocalDate data;
     private LocalTime horaInicio;
     private LocalTime horaFim;
 
@@ -35,6 +38,7 @@ public class Agendamento {
     private StatusAgendamento status;
 
     private String descricao;
+    private String precoRegistrado;
 
     @OneToOne(mappedBy = "agendamento")
     private Feedback feedback;

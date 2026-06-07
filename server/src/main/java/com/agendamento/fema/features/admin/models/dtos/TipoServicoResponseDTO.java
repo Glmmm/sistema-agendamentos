@@ -6,5 +6,6 @@ public record TipoServicoResponseDTO(
         Long id,
         String nome,
         String descricao,
-        BigDecimal preco
+        BigDecimal preco,
+        Boolean ativo
 ) {}

@@ -21,7 +21,7 @@ export class CargasHorariasService {
     );
   }
 
-  public createCargaHoraria(cargaHorariaData: ICargaHoraria) {
+  public createCargaHoraria(cargaHorariaData: any) {
     return this.http.post<ICargaHorariaResponse>(this.cargasHorariasUrl, cargaHorariaData);
   }
 
@@ -29,7 +29,7 @@ export class CargasHorariasService {
     return this.http.delete(`${this.cargasHorariasUrl}/${cargaHorariaId}`);
   }
 
-  public updateCargaHoraria(cargaHorariaId: number, cargaHorariaData: ICargaHoraria) {
+  public updateCargaHoraria(cargaHorariaId: number, cargaHorariaData: any) {
     return this.http.put<ICargaHorariaResponse>(
       `${this.cargasHorariasUrl}/${cargaHorariaId}`,
       cargaHorariaData,

@@ -11,17 +11,13 @@ export class TiposServicosService {
 
   private http = inject(HttpClient);
 
-  public getTiposServicos() {
-    return this.http.get<ITipoServicoResponse[]>(this.tiposServicosUrl);
-  }
-
   public getServicosByProfissional(profissionalId: number) {
     return this.http.get<ITipoServicoResponse[]>(
       `${this.tiposServicosUrl}/profissional/${profissionalId}`,
     );
   }
 
-  public createServico(servicoData: ITipoServico) {
+  public createServico(servicoData: any) {
     return this.http.post(this.tiposServicosUrl, servicoData);
   }
 
@@ -29,7 +25,7 @@ export class TiposServicosService {
     return this.http.delete(`${this.tiposServicosUrl}/${servicoId}`);
   }
 
-  public updateServico(servicoId: number, servicoData: ITipoServico) {
+  public updateServico(servicoId: number, servicoData: any) {
     return this.http.put(`${this.tiposServicosUrl}/${servicoId}`, servicoData);
   }
 }

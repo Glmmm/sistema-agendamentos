@@ -95,7 +95,8 @@ public class TipoServicoService {
             throw new RuntimeException("Acesso negado: você não pode deletar este serviço.");
         }
 
-        tipoServicoRepository.delete(servico);
+        servico.setAtivo(false);
+        tipoServicoRepository.save(servico);
     }
 
     private TipoServicoResponseDTO converterParaResponseDTO(TipoServico s) {
@@ -103,7 +104,8 @@ public class TipoServicoService {
                 s.getId(),
                 s.getNome(),
                 s.getDescricao(),
-                s.getPreco()
+                s.getPreco(),
+                s.getAtivo()
         );
     }
 }

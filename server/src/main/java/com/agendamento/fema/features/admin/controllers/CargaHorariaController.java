@@ -30,7 +30,7 @@ public class CargaHorariaController {
 
     @GetMapping("/profissional/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'CLIENTE')")
-    public ResponseEntity<?> listarPorProfissionalId(@AuthenticationPrincipal Usuario usuarioLogado, Long id) {
+    public ResponseEntity<?> listarPorProfissionalId(@AuthenticationPrincipal Usuario usuarioLogado, @PathVariable Long id) {
         List<CargaHorariaResponseDTO> cargas = cargaHorariaService.listarPorProfissional(id);
         return ResponseEntity.ok(cargas);
     }

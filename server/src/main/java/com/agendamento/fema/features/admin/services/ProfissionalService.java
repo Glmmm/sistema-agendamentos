@@ -16,7 +16,6 @@ public class ProfissionalService {
 
     private final ProfissionalRepository profissionalRepository;
     private final EmpresaRepository empresaRepository;
-    private final TipoServicoRepository tipoServicoRepository;
     private final CargaHorariaRepository cargaHorariaRepository;
 
     @Transactional(readOnly = true)
@@ -64,8 +63,6 @@ public class ProfissionalService {
         profissional.setTelefone(dto.telefone());
         profissional.setAtivo(dto.ativo());
 
-        cargaHorariaRepository.deleteByProfissionalId(id);
-
         return converterParaResponseDTO(profissionalRepository.save(profissional));
     }
 
@@ -82,37 +79,8 @@ public class ProfissionalService {
 
     }
 
-    private void vincularServicos(Profissional profissional, List<Long> servicosIds) {
-        if (servicosIds != null && !servicosIds.isEmpty()) {
-            List<TipoServico> servicos = tipoServicoRepository.findAllById(servicosIds);
-            profissional.setServicos(servicos);
-        } else {
-            profissional.getServicos().clear();
-        }
-    }
-
-    private void vincularCargasHorarias(Profissional profissional, List<CargaHorariaDTO> cargasDTO) {
-        if (cargasDTO != null && !cargasDTO.isEmpty()) {
-            List<CargaHoraria> cargas = cargasDTO.stream().map(dto -> {
-                CargaHoraria ch = new CargaHoraria();
-                ch.setProfissional(profissional);
-                ch.setDiaSemana(dto.diaSemana());
-                ch.setHoraInicio(dto.horaInicio());
-                ch.setHoraFim(dto.horaFim());
-                ch.setIntervaloAtendimento(dto.intervaloAtendimento());
-                return ch;
-            }).collect(Collectors.toList());
-
-            if (profissional.getCargasHorarias() == null) {
-                profissional.setCargasHorarias(cargas);
-            } else {
-                profissional.getCargasHorarias().addAll(cargas);
-            }
-        }
-    }
-
     private ProfissionalResponseDTO converterParaResponseDTO(Profissional p) {
-        List<TipoServicoResponseDTO> servicosDTO = p.getServicos() != null ? p.getServicos().stream().map(s -> new TipoServicoResponseDTO(s.getId(), s.getNome(), s.getDescricao(), s.getPreco())).collect(Collectors.toList()) : List.of();
+        List<TipoServicoResponseDTO> servicosDTO = p.getServicos() != null ? p.getServicos().stream().map(s -> new TipoServicoResponseDTO(s.getId(), s.getNome(), s.getDescricao(), s.getPreco(), s.getAtivo()  )).collect(Collectors.toList()) : List.of();
 
         List<CargaHorariaResponseDTO> cargasDTO = p.getCargasHorarias() != null ? p.getCargasHorarias().stream().map(ch -> new CargaHorariaResponseDTO(ch.getId(), p.getId(), p.getNome(), ch.getDiaSemana(), ch.getHoraInicio(), ch.getHoraFim(), ch.getIntervaloAtendimento())).collect(Collectors.toList()) : List.of();
 

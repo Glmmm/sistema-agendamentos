@@ -40,11 +40,6 @@ export const routes: Routes = [
             (m) => m.ProfissionaisComponent,
           ),
       },
-      {
-        path: 'servicos',
-        loadComponent: () =>
-          import('./features/admin/components/servicos/servicos').then((m) => m.ServicosComponent),
-      },
     ],
   },
 

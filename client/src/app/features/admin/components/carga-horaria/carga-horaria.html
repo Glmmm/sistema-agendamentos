@@ -1,0 +1,151 @@
+<p-dialog
+  [(visible)]="displayDialog"
+  [modal]="true"
+  [header]="isEditing ? 'Editar Carga Horária' : 'Adicionar Carga Horária'"
+>
+  <form
+    id="cargaHorariaForm"
+    [formGroup]="form"
+    (ngSubmit)="salvarCargaHoraria()"
+    class="mb-6 p-4 rounded shadow-sm w-full max-w-md mx-auto"
+  >
+    <div class="flex flex-col gap-4">
+      <div>
+        <label for="diaSemana" class="block text-sm font-medium text-gray-400 mb-1"
+          >Dia da Semana</label
+        >
+        <select
+          id="diaSemana"
+          formControlName="diaSemana"
+          class="w-full p-2 rounded bg-zinc-800 text-white border border-zinc-700 disabled:opacity-50"
+        >
+          <option value="" disabled>Selecione um dia</option>
+          @for (opcao of diasDisponiveis; track opcao.value) {
+            <option [value]="opcao.value">{{ opcao.label }}</option>
+          }
+        </select>
+        @if (diasDisponiveis.length === 0 && !isEditing) {
+          <p class="text-xs text-amber-500 mt-1">Todos os dias da semana já foram configurados.</p>
+        }
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label for="horaInicio" class="block text-sm font-medium text-gray-400 mb-1"
+            >Hora Início</label
+          >
+          <input
+            pInputText
+            type="time"
+            id="horaInicio"
+            formControlName="horaInicio"
+            class="w-full"
+          />
+        </div>
+        <div>
+          <label for="horaFim" class="block text-sm font-medium text-gray-400 mb-1">Hora Fim</label>
+          <input pInputText type="time" id="horaFim" formControlName="horaFim" class="w-full" />
+        </div>
+      </div>
+
+      <div>
+        <label for="intervaloAtendimento" class="block text-sm font-medium text-gray-400 mb-1">
+          Intervalo (em minutos)
+        </label>
+        <p-inputNumber
+          id="intervaloAtendimento"
+          class="w-full"
+          formControlName="intervaloAtendimento"
+          placeholder="Ex: 30"
+          suffix=" min"
+          [min]="1"
+          size="small"
+        />
+      </div>
+    </div>
+  </form>
+
+  <ng-template pTemplate="footer">
+    <div class="flex justify-end gap-2">
+      <p-button (click)="displayDialog.set(false)" label="Cancelar" outlined="true"></p-button>
+      <button
+        pButton
+        label="Salvar"
+        type="submit"
+        form="cargaHorariaForm"
+        [disabled]="form.invalid"
+      ></button>
+    </div>
+  </ng-template>
+</p-dialog>
+
+<div class="w-full flex flex-col">
+  <div class="flex justify-end mb-4">
+    <p-button
+      (click)="abrirModalCadastro()"
+      icon="pi pi-plus"
+      size="small"
+      label="Adicionar Horário"
+    >
+    </p-button>
+  </div>
+
+  <div class="flex flex-wrap gap-4">
+    @for (item of cargasHorarias(); track item.id) {
+      <p-card class="w-3xs">
+        <div class="flex flex-col gap-4 p-2 justify-between">
+          <div class="flex justify-between items-center">
+            <p class="font-bold text-lg text-emerald-500">{{ item.diaSemana }}</p>
+
+            <div class="flex justify-end items-center">
+              <p-popover #op>
+                <ng-template #content>
+                  <div class="flex flex-col gap-2">
+                    <p-button
+                      (click)="editarCargaHoraria(item); op.toggle($event)"
+                      size="small"
+                      text="true"
+                      label="Editar"
+                      icon="pi pi-pencil"
+                    ></p-button>
+                    <p-button
+                      (click)="excluirCargaHoraria(item.id); op.toggle($event)"
+                      size="small"
+                      text="true"
+                      label="Deletar"
+                      icon="pi pi-trash"
+                      severity="danger"
+                    ></p-button>
+                  </div>
+                </ng-template>
+              </p-popover>
+              <p-button
+                (click)="op.toggle($event)"
+                size="small"
+                text="true"
+                icon="pi pi-ellipsis-v"
+                outlined="true"
+              ></p-button>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-1 text-sm text-gray-300">
+            <p>
+              <i class="pi pi-clock mr-1 text-gray-500"></i> {{ item.horaInicio }} até
+              {{ item.horaFim }}
+            </p>
+            <p>
+              <i class="pi pi-hourglass mr-1 text-gray-500"></i> Turnos de:
+              <b>{{ item.intervaloAtendimento }} min</b>
+            </p>
+          </div>
+        </div>
+      </p-card>
+    } @empty {
+      <div class="w-full text-center p-12 rounded border border-dashed text-gray-400">
+        <i class="pi pi-calendar-times text-2xl mb-2"></i>
+        <p>Nenhuma carga horária configurada para este profissional.</p>
+      </div>
+    }
+  </div>
+</div>
