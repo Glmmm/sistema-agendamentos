@@ -1,0 +1,41 @@
+<div class="w-full mx-auto p-6 rounded-xl">
+  <div class="flex items-center space-x-4 border-b border-neutral-800 pb-6 mb-6">
+    <div>
+      <h1 class="text-2xl font-bold">Dados da Empresa</h1>
+      <p class="text-sm text-gray-500">
+        Gerencie as informações públicas e de contato da sua organização.
+      </p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="space-y-1">
+      <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">
+        Razão Social / Nome
+      </p>
+      <p class="text-lg font-medium">{{ user()?.nome }}</p>
+    </div>
+
+    <div class="space-y-1">
+      <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">CNPJ</p>
+      <p class="text-lg font-medium">{{ user()?.cnpj }}</p>
+    </div>
+
+    <div class="space-y-1">
+      <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Usuário de Login</p>
+      <p class="text-lg font-medium">
+        {{ user()?.login }}
+      </p>
+    </div>
+
+    <div class="space-y-1">
+      <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Telefone</p>
+      <p class="text-lg font-medium">{{ user()?.telefone }}</p>
+    </div>
+
+    <div class="space-y-1 md:col-span-2">
+      <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Endereço Comercial</p>
+      <p class="text-lg font-medium">{{ user()?.endereco }}</p>
+    </div>
+  </div>
+</div>

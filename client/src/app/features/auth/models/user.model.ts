@@ -7,7 +7,7 @@ export interface IUserInfo {
     nome: string;
     telefone: string;
     login: string;
-    cpnj?: string;
+    cnpj?: string;
     endereco?: string;
   };
 }

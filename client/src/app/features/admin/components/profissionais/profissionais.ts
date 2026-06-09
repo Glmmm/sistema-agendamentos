@@ -12,7 +12,7 @@ import { DrawerModule } from 'primeng/drawer';
 import { ProfissionaisService } from '../../../../core/services/admin/profissionais.service';
 import { AuthHelper } from '../../../auth/auth.helper';
 import { IProfissionalResponse } from '../../models/profissionais-response.model';
-import { profissionaisForms } from './models/forms/profissionais.forms';
+import { profissionaisForms } from './forms/profissionais.forms';
 import { ServicosComponent } from '../servicos/servicos';
 import { CargaHorariaComponent } from '../carga-horaria/carga-horaria';
 

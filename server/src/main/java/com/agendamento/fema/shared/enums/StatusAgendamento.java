@@ -11,4 +11,3 @@ public enum StatusAgendamento {
         this.descricao = descricao;
     }
 }
-

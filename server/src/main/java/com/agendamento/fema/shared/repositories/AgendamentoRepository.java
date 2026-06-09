@@ -11,4 +11,7 @@ public interface AgendamentoRepository extends JpaRepository<Agendamento, Long> 
     List<Agendamento> findByClienteIdOrderByDataDescHoraInicioDesc(Long clienteId);
 
     List<Agendamento> findByProfissionalIdAndDataAndStatusNot(Long profissionalId, LocalDate data, StatusAgendamento status);
+
+    List<Agendamento> findAllByProfissionalEmpresaId(Long profissionalEmpresaId);
+
 }

@@ -82,7 +82,10 @@
     </div>
   </ng-template>
 </p-dialog>
-
+<div class="flex items-center gap-2 text-md font-semibold text-gray-300">
+  <i class="pi pi-calendar"></i>
+  <span>Horários de Atendimento</span>
+</div>
 <div class="w-full flex flex-col">
   <div class="flex justify-end mb-4">
     <p-button
@@ -143,8 +146,8 @@
       </p-card>
     } @empty {
       <div class="w-full text-center p-12 rounded border border-dashed text-gray-400">
-        <i class="pi pi-calendar-times text-2xl mb-2"></i>
-        <p>Nenhuma carga horária configurada para este profissional.</p>
+        <i class="pi pi-info-circle text-2xl mb-2"></i>
+        <p>Nenhuma carga horária cadastrada para este profissional.</p>
       </div>
     }
   </div>

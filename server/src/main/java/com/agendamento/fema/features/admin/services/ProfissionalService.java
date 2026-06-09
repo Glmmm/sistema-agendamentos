@@ -80,11 +80,7 @@ public class ProfissionalService {
     }
 
     private ProfissionalResponseDTO converterParaResponseDTO(Profissional p) {
-        List<TipoServicoResponseDTO> servicosDTO = p.getServicos() != null ? p.getServicos().stream().map(s -> new TipoServicoResponseDTO(s.getId(), s.getNome(), s.getDescricao(), s.getPreco(), s.getAtivo()  )).collect(Collectors.toList()) : List.of();
-
-        List<CargaHorariaResponseDTO> cargasDTO = p.getCargasHorarias() != null ? p.getCargasHorarias().stream().map(ch -> new CargaHorariaResponseDTO(ch.getId(), p.getId(), p.getNome(), ch.getDiaSemana(), ch.getHoraInicio(), ch.getHoraFim(), ch.getIntervaloAtendimento())).collect(Collectors.toList()) : List.of();
-
-        return new ProfissionalResponseDTO(p.getId(), p.getNome(), p.getEmail(), p.getTelefone(), p.isAtivo(), servicosDTO, cargasDTO);
+        return new ProfissionalResponseDTO(p.getId(), p.getNome(), p.getEmail(), p.getTelefone(), p.isAtivo());
     }
 
 }
