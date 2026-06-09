@@ -118,7 +118,7 @@ export class ProfissionaisComponent implements OnInit {
   }
 
   abrirModalCadastro(): void {
-    this.limparFormulario();
+    this.form = profissionaisForms();
     this.displayDialog.set(true);
   }
 

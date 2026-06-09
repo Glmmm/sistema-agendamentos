@@ -19,6 +19,7 @@ import { Router, RouterLink } from '@angular/router';
           <div class="w-full flex flex-col">
             <label for="login" class="font-semibold">E-mail</label>
             <input
+              class="w-full"
               pInputText
               type="login"
               formControlName="login"
@@ -27,7 +28,13 @@ import { Router, RouterLink } from '@angular/router';
           </div>
           <div class="w-full flex flex-col">
             <label for="password" class="font-semibold">Senha</label>
-            <input pInputText type="password" formControlName="password" placeholder="*******" />
+            <input
+              class="w-full"
+              pInputText
+              type="password"
+              formControlName="password"
+              placeholder="*******"
+            />
           </div>
           <p class="text-center text-sm text-neutral-400  ">
             não tem conta?

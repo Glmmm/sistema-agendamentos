@@ -7,10 +7,18 @@ import { MessageService } from 'primeng/api';
 import { IDashboardResponse } from '../../models/dashboard-metricas.model';
 import { TableModule } from 'primeng/table';
 import { AvatarModule } from 'primeng/avatar';
+import { StatusBadgeDirective } from './directives/status.directive';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, CardModule, ProgressBarModule, TableModule, AvatarModule, DatePipe],
+  imports: [
+    CommonModule,
+    CardModule,
+    ProgressBarModule,
+    TableModule,
+    AvatarModule,
+    StatusBadgeDirective,
+  ],
   templateUrl: './dashboard.html',
   styleUrls: [],
 })
