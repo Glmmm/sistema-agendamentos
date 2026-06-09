@@ -1,6 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
+import { AuthStore } from '../../features/auth/auth.store';
+import { ERoles } from '../../shared/models/roles';
 
 @Component({
   imports: [ButtonModule],
@@ -24,9 +26,14 @@ import { ButtonModule } from 'primeng/button';
   `,
 })
 export class PageNotFoundComponent {
+  store = inject(AuthStore);
   router = inject(Router);
 
   public goHome() {
-    this.router.navigate(['/']);
+    if (this.store.user()?.type == ERoles.ADMIN) {
+      this.router.navigate(['/admin']);
+      return;
+    }
+    this.router.navigate(['/client']);
   }
 }

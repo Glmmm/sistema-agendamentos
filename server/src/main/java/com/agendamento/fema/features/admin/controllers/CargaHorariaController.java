@@ -30,7 +30,7 @@ public class CargaHorariaController {
 
     @GetMapping("/profissional/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'CLIENTE')")
-    public ResponseEntity<?> listarPorProfissionalId(@AuthenticationPrincipal Usuario usuarioLogado, @PathVariable Long id) {
+    public ResponseEntity<?> listarPorProfissionalId(@PathVariable Long id) {
         List<CargaHorariaResponseDTO> cargas = cargaHorariaService.listarPorProfissional(id);
         return ResponseEntity.ok(cargas);
     }
@@ -50,8 +50,8 @@ public class CargaHorariaController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> cadastrar(@AuthenticationPrincipal Usuario usuarioLogado, @RequestBody CargaHorariaDTO dto) {
         try {
-            CargaHorariaResponseDTO novaCarga = cargaHorariaService.cadastrar(usuarioLogado.getId(), dto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(novaCarga);
+            List<CargaHorariaResponseDTO> novasCargas = cargaHorariaService.cadastrarEmLote(usuarioLogado.getId(), dto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(novasCargas);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
@@ -61,7 +61,7 @@ public class CargaHorariaController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> atualizar(@AuthenticationPrincipal Usuario usuarioLogado, @PathVariable Long id, @RequestBody CargaHorariaDTO dto) {
         try {
-            CargaHorariaResponseDTO atualizada = cargaHorariaService.atualizar(usuarioLogado.getId(), id, dto);
+            List<CargaHorariaResponseDTO> atualizada = cargaHorariaService.atualizarEmLote(usuarioLogado.getId(), id, dto);
             return ResponseEntity.ok(atualizada);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());

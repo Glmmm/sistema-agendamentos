@@ -6,6 +6,6 @@ export function profissionaisForms() {
     nome: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required, Validators.email]),
     telefone: new FormControl('', [Validators.required]),
-    ativo: new FormControl(true, [Validators.required]),
+    ativo: new FormControl(true),
   });
 }

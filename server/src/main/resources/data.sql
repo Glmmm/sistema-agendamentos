@@ -1,7 +1,5 @@
--- drop table agendamento, carga_horaria, cliente, empresa, feedback, profissional, role, tipo_servico, usuario;
--- ====================================================================
--- 1. Inserir Roles (Papéis)
--- ====================================================================
+-- -- drop table agendamento, carga_horaria, cliente, empresa, feedback, profissional, role, tipo_servico, usuario;
+
 INSERT INTO role (id, name) VALUES
                                 (1, 'ROLE_ADMIN'),
                                 (2, 'ROLE_EMPRESA'),

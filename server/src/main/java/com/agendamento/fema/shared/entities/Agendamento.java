@@ -37,7 +37,7 @@ public class Agendamento {
     @Enumerated(EnumType.STRING)
     private StatusAgendamento status;
 
-    private String descricao;
+    private String observacao;
     private String precoRegistrado;
 
     @OneToOne(mappedBy = "agendamento")

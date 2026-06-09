@@ -7,5 +7,7 @@ import java.util.List;
 
 public interface ProfissionalRepository extends JpaRepository<Profissional, Long> {
     List<Profissional> findByEmpresaId(Long empresaId);
+
+    List<Profissional> findByEmpresaIdAndAtivoTrue(Long empresaId, boolean ativo);
 }
 

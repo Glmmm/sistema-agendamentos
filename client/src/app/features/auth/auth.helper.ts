@@ -4,6 +4,7 @@ import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { FormGroup } from '@angular/forms';
 import { AuthStore } from './auth.store';
+import { ERoles } from '../../shared/models/roles';
 
 @Injectable({ providedIn: 'root' })
 export class AuthHelper {
@@ -17,7 +18,6 @@ export class AuthHelper {
       this.service.login(form.value).subscribe({
         next: (res: any) => {
           this.store.token = res.token;
-          this.router.navigate(['/']);
           this.getUserInfo();
         },
         error: (err) => {
@@ -67,6 +67,11 @@ export class AuthHelper {
     this.service.getUserInfo().subscribe({
       next: (res: any) => {
         this.store.user.set(res);
+        if (this.store.user()?.type == ERoles.ADMIN) {
+          this.router.navigate(['/admin']);
+        } else {
+          this.router.navigate(['/client']);
+        }
       },
       error: (err) => {
         this.logout();

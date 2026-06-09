@@ -12,17 +12,21 @@ import { cargaHorariaForms } from './models/forms/carga-horaria.forms';
 import { CargasHorariasService } from '../../../../core/services/admin/cargas-horarias.service';
 import { ICargaHorariaResponse } from '../../models/cargas.horarias-response.model';
 import { DIAS_SEMANA_OPTIONS } from './models/dias-semana-options';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-carga-horaria',
   templateUrl: './carga-horaria.html',
   imports: [
+    TitleCasePipe,
     CardModule,
     DialogModule,
     ButtonModule,
     PopoverModule,
     ReactiveFormsModule,
     InputTextModule,
+    MultiSelectModule,
     InputNumberModule,
   ],
 })
@@ -86,7 +90,7 @@ export class CargaHorariaComponent implements OnInit {
   }
 
   private alterarCargaHoraria(): void {
-    const id = this.form.get('id')?.value;
+    const id = this.form.get('profissionalId')?.value;
 
     this.service.updateCargaHoraria(id!, this.form.value).subscribe({
       next: () => this.handleSuccess('Carga horária atualizada com sucesso'),
@@ -110,7 +114,7 @@ export class CargaHorariaComponent implements OnInit {
   editarCargaHoraria(carga: ICargaHorariaResponse): void {
     this.form.patchValue({
       id: carga.id,
-      diaSemana: carga.diaSemana,
+      diasSemana: [carga.diaSemana],
       horaInicio: carga.horaInicio.substring(0, 5),
       horaFim: carga.horaFim.substring(0, 5),
       intervaloAtendimento: carga.intervaloAtendimento,
@@ -141,7 +145,7 @@ export class CargaHorariaComponent implements OnInit {
   diasDaSemanaOpcoes = DIAS_SEMANA_OPTIONS;
 
   get diasDisponiveis() {
-    const diasCadastrados = this.cargasHorarias().map((c) => c.diaSemana.toString());
+    const diasCadastrados = this.cargasHorarias().map((c) => c.diaSemana);
     const diaSendoEditado = this.form.get('diaSemana')?.value;
 
     return this.diasDaSemanaOpcoes.filter((opcao) => {

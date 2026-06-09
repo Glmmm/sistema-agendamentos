@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ToastModule } from 'primeng/toast';
-import { HeaderComponent } from './features/home/components/header';
-import { FooterComponent } from './features/home/components/footer';
+import { HeaderComponent } from './features/layout/header';
+import { FooterComponent } from './features/layout/footer';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @Component({

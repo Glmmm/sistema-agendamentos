@@ -40,21 +40,34 @@ export const routes: Routes = [
             (m) => m.ProfissionaisComponent,
           ),
       },
+      {
+        path: 'perfil',
+        loadComponent: () =>
+          import('./features/admin/components/perfil/perfil').then((m) => m.PerfilComponent),
+      },
     ],
   },
 
   {
     path: 'client',
-    canActivate: [authGuard, roleGuard],
     data: { expectedRole: ERoles.CLIENTE },
-    children: [],
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./features/client/components/catalogo/catalogo').then((m) => m.CatalogoComponent),
+      },
+      {
+        path: 'agendamento',
+        canActivate: [authGuard, roleGuard],
+        loadComponent: () =>
+          import('./features/client/components/agendamento/agendamento').then(
+            (m) => m.AgendamentoComponent,
+          ),
+      },
+    ],
   },
 
-  {
-    path: '',
-    loadComponent: () => import('./features/home/home').then((m) => m.HomeComponent),
-    children: [],
-  },
   {
     path: '**',
     loadComponent: () =>

@@ -13,7 +13,6 @@ import { ProfissionaisService } from '../../../../core/services/admin/profission
 import { AuthHelper } from '../../../auth/auth.helper';
 import { IProfissionalResponse } from '../../models/profissionais-response.model';
 import { profissionaisForms } from './models/forms/profissionais.forms';
-import { PROFISSIONAIS_TABLE_COLUMNS } from './models/profissionais.table';
 import { ServicosComponent } from '../servicos/servicos';
 import { CargaHorariaComponent } from '../carga-horaria/carga-horaria';
 
@@ -42,7 +41,6 @@ export class ProfissionaisComponent implements OnInit {
   displayDialog = signal(false);
   profissionais = signal<IProfissionalResponse[]>([]);
 
-  columns = PROFISSIONAIS_TABLE_COLUMNS;
   form = profissionaisForms();
 
   displayDrawer = signal(false);
@@ -134,19 +132,24 @@ export class ProfissionaisComponent implements OnInit {
     this.displayDialog.set(true);
   }
 
-  confirmExcluirProfissional(profissionalId: number) {
+  ativarProfissional(profissionalSelecionado: IProfissionalResponse) {
+    profissionalSelecionado.ativo = true;
+    this.form.patchValue(profissionalSelecionado);
+    this.alterarProfissional();
+  }
+
+  confirmDesativarProfissional(profissionalId: number) {
     this.confirmation.confirm({
-      message: 'Tem certeza que deseja deletar este profissional?',
+      message: 'Tem certeza que deseja desativar este profissional?',
       header: 'Atenção Necessária',
-      icon: 'pi pi-trash',
-      rejectLabel: 'Cancelar',
+      icon: 'pi pi-exclamation-triangle',
       rejectButtonProps: {
-        label: 'Cancel',
+        label: 'Cancelar',
         severity: 'secondary',
         outlined: true,
       },
       acceptButtonProps: {
-        label: 'Deletar',
+        label: 'Desativar',
         severity: 'danger',
       },
 

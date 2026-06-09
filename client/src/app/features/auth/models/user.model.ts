@@ -1,5 +1,7 @@
+import { ERoles } from '../../../shared/models/roles';
+
 export interface IUserInfo {
-  type: string;
+  type: ERoles;
   data: {
     id: number;
     nome: string;

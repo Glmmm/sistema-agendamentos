@@ -1,7 +1,9 @@
 <p-dialog
   [(visible)]="displayDialog"
   [modal]="true"
+  [draggable]="false"
   [header]="isEditing ? 'Editar Carga Horária' : 'Adicionar Carga Horária'"
+  [style]="{ width: '450px' }"
 >
   <form
     id="cargaHorariaForm"
@@ -11,19 +13,21 @@
   >
     <div class="flex flex-col gap-4">
       <div>
-        <label for="diaSemana" class="block text-sm font-medium text-gray-400 mb-1"
-          >Dia da Semana</label
-        >
-        <select
-          id="diaSemana"
-          formControlName="diaSemana"
-          class="w-full p-2 rounded bg-zinc-800 text-white border border-zinc-700 disabled:opacity-50"
-        >
-          <option value="" disabled>Selecione um dia</option>
-          @for (opcao of diasDisponiveis; track opcao.value) {
-            <option [value]="opcao.value">{{ opcao.label }}</option>
-          }
-        </select>
+        <label for="diasSemana" class="block text-sm font-medium text-gray-400 mb-1">
+          Dias da Semana
+        </label>
+
+        <p-multiSelect
+          class="w-full"
+          id="diasSemana"
+          formControlName="diasSemana"
+          [options]="diasDisponiveis"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Selecione um ou mais dias"
+          [disabled]="isEditing"
+        ></p-multiSelect>
+
         @if (diasDisponiveis.length === 0 && !isEditing) {
           <p class="text-xs text-amber-500 mt-1">Todos os dias da semana já foram configurados.</p>
         }
@@ -67,7 +71,7 @@
 
   <ng-template pTemplate="footer">
     <div class="flex justify-end gap-2">
-      <p-button (click)="displayDialog.set(false)" label="Cancelar" outlined="true"></p-button>
+      <p-button (click)="displayDialog.set(false)" label="Cancelar" [outlined]="true"></p-button>
       <button
         pButton
         label="Salvar"
@@ -90,45 +94,11 @@
     </p-button>
   </div>
 
-  <div class="flex flex-wrap gap-4">
+  <div class="flex flex-col gap-4">
     @for (item of cargasHorarias(); track item.id) {
-      <p-card class="w-3xs">
-        <div class="flex flex-col gap-4 p-2 justify-between">
-          <div class="flex justify-between items-center">
-            <p class="font-bold text-lg text-emerald-500">{{ item.diaSemana }}</p>
-
-            <div class="flex justify-end items-center">
-              <p-popover #op>
-                <ng-template #content>
-                  <div class="flex flex-col gap-2">
-                    <p-button
-                      (click)="editarCargaHoraria(item); op.toggle($event)"
-                      size="small"
-                      text="true"
-                      label="Editar"
-                      icon="pi pi-pencil"
-                    ></p-button>
-                    <p-button
-                      (click)="excluirCargaHoraria(item.id); op.toggle($event)"
-                      size="small"
-                      text="true"
-                      label="Deletar"
-                      icon="pi pi-trash"
-                      severity="danger"
-                    ></p-button>
-                  </div>
-                </ng-template>
-              </p-popover>
-              <p-button
-                (click)="op.toggle($event)"
-                size="small"
-                text="true"
-                icon="pi pi-ellipsis-v"
-                outlined="true"
-              ></p-button>
-            </div>
-          </div>
-
+      <p-card [style]="{ background: '#262626' }">
+        <div class="flex justify-between items-center">
+          <p class="font-bold text-lg">{{ item.diaSemana | titlecase }}</p>
           <div class="flex flex-col gap-1 text-sm text-gray-300">
             <p>
               <i class="pi pi-clock mr-1 text-gray-500"></i> {{ item.horaInicio }} até
@@ -138,6 +108,36 @@
               <i class="pi pi-hourglass mr-1 text-gray-500"></i> Turnos de:
               <b>{{ item.intervaloAtendimento }} min</b>
             </p>
+          </div>
+          <div class="flex justify-end items-center">
+            <p-popover #op>
+              <ng-template #content>
+                <div class="flex flex-col gap-2">
+                  <p-button
+                    (click)="editarCargaHoraria(item); op.toggle($event)"
+                    size="small"
+                    text="true"
+                    label="Editar"
+                    icon="pi pi-pencil"
+                  ></p-button>
+                  <p-button
+                    (click)="excluirCargaHoraria(item.id); op.toggle($event)"
+                    size="small"
+                    text="true"
+                    label="Deletar"
+                    icon="pi pi-trash"
+                    severity="danger"
+                  ></p-button>
+                </div>
+              </ng-template>
+            </p-popover>
+            <p-button
+              (click)="op.toggle($event)"
+              size="small"
+              text="true"
+              icon="pi pi-ellipsis-v"
+              [outlined]="true"
+            ></p-button>
           </div>
         </div>
       </p-card>

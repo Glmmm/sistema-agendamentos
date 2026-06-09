@@ -10,7 +10,6 @@ import { TextareaModule } from 'primeng/textarea';
 import { PopoverModule } from 'primeng/popover';
 import { TableModule } from 'primeng/table';
 
-import { servicosTableColumns } from './models/servicos.table';
 import { TiposServicosService } from '../../../../core/services/admin/tipos-servicos.service';
 import { ITipoServicoResponse } from '../../models/tipo-servicos-response.model';
 import { servicosForms } from './models/forms/servicos.forms';
@@ -41,7 +40,6 @@ export class ServicosComponent implements OnInit {
   displayDialog = signal(false);
   servicos = signal<ITipoServicoResponse[]>([]);
 
-  columns = servicosTableColumns;
   form = servicosForms();
 
   get isEditing(): boolean {

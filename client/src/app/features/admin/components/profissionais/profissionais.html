@@ -76,15 +76,15 @@
 
   <div class="flex flex-wrap justify-evenly gap-4">
     @for (item of profissionais(); track item.id) {
-      <p-card class="min-w-70">
-        <div class="flex flex-col gap-4 p-4 rounded justify-between h-full">
+      <p-card class="w-3xs" [style]="{ background: '#262626' }">
+        <div class="flex flex-col gap-4 rounded justify-between h-full">
           <div>
             <p class="font-semibold text-lg">{{ item.nome }}</p>
             <p class="text-sm text-gray-500"><i class="pi pi-envelope mr-1"></i>{{ item.email }}</p>
             <p class="text-sm text-gray-500"><i class="pi pi-phone mr-1"></i>{{ item.telefone }}</p>
           </div>
 
-          <div class="flex justify-end mt-2">
+          <div class="flex justify-end">
             <p-button
               (click)="abrirGerenciamentoProfissional(item)"
               size="small"
@@ -127,24 +127,34 @@
               label="Editar"
             >
             </p-button>
-            <p-button
-              (click)="confirmExcluirProfissional(profissionalSelecionado()!.id)"
-              icon="pi pi-trash"
-              severity="danger"
-              size="small"
-              label="Deletar"
-              outlined="true"
-            >
-            </p-button>
+            @if (!profissionalSelecionado()?.ativo) {
+              <p-button
+                (click)="ativarProfissional(profissionalSelecionado()!)"
+                icon="pi pi-check"
+                size="small"
+                label="Ativar"
+                outlined="true"
+              ></p-button>
+            } @else {
+              <p-button
+                (click)="confirmDesativarProfissional(profissionalSelecionado()!.id)"
+                icon="pi pi-trash"
+                severity="danger"
+                size="small"
+                label="Desativar"
+                outlined="true"
+              >
+              </p-button>
+            }
           </div>
         </div>
 
         <div class="flex flex-col gap-2">
-          <div class="flex items-center gap-2 text-md font-semibold text-gray-300 mb-2">
+          <div class="flex items-center gap-2 text-md font-semibold text-gray-300">
             <i class="pi pi-briefcase"></i>
             <span>Serviços Deste Profissional</span>
           </div>
-          <div class="p-4 rounded-lg max-h-75 overflow-y-auto">
+          <div class="p-4 rounded-lg max-h-96 overflow-y-auto">
             <app-servicos [profissionalId]="profissionalSelecionado()!.id"></app-servicos>
           </div>
         </div>
@@ -152,11 +162,11 @@
         <hr class="border-gray-800" />
 
         <div class="flex flex-col gap-2">
-          <div class="flex items-center gap-2 text-md font-semibold text-gray-300 mb-2">
+          <div class="flex items-center gap-2 text-md font-semibold text-gray-300">
             <i class="pi pi-calendar"></i>
             <span>Horários de Atendimento</span>
           </div>
-          <div class="p-6 rounded-lg text-center text-gray-500 text-sm">
+          <div class="p-4 rounded-lg max-h-96 overflow-y-auto">
             <app-carga-horaria [profissionalId]="profissionalSelecionado()!.id"></app-carga-horaria>
           </div>
         </div>

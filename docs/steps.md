@@ -8,21 +8,21 @@ A stack tecnológica foi mantida com Angular (utilizando Tailwind e PrimeNG para
 
 O objetivo desta fase é deixar os ambientes de desenvolvimento prontos, integrados e padronizados para suportar os casos de uso.
 
-* [ ] **Modelagem do Banco de Dados:** Refinar o Diagrama Entidade-Relacionamento (ER) contemplando tabelas para Clientes, Administradores, Serviços, Profissionais, Agendamentos, Avaliações e Informações do Negócio.
-* [ ] **Setup do Back-end (Spring Boot):**
+* [X] **Modelagem do Banco de Dados:** Refinar o Diagrama Entidade-Relacionamento (ER) contemplando tabelas para Clientes, Administradores, Serviços, Profissionais, Agendamentos, Avaliações e Informações do Negócio.
+* [X] **Setup do Back-end (Spring Boot):**
 * Inicializar o projeto com as dependências centrais (Web, JPA, Security, PostgreSQL).
 * Configurar a estrutura de pastas Package-by-Feature (como `auth`, `catalog`, `booking`, `reports`).
 * Configurar o Flyway e criar a primeira *migration* (V1) com as tabelas base.
 * Configurar variáveis de ambiente e perfil de desenvolvimento (`application-dev.yml`).
 
 
-* [ ] **Setup do Front-end (Angular):**
+* [X] **Setup do Front-end (Angular):**
 * Criar o workspace do Angular.
 * Configurar o Tailwind CSS e biblioteca de componentes (como PrimeNG) para estilização ágil e responsiva.
 * Estabelecer a arquitetura de pastas do front-end dividindo entre Área do Cliente (App) e Gestão (Painel Admin).
 
 
-* [ ] **Integração Inicial:** Criar um endpoint genérico de "Health Check" no Spring e consumi-lo no Angular para validar o CORS e a comunicação.
+* [X] **Integração Inicial:** Criar um endpoint genérico de "Health Check" no Spring e consumi-lo no Angular para validar o CORS e a comunicação.
 
 ---
 
@@ -30,13 +30,13 @@ O objetivo desta fase é deixar os ambientes de desenvolvimento prontos, integra
 
 Garantir o acesso seguro separando a Área do Cliente do Painel Administrativo.
 
-* [ ] **Back-end (API):**
+* [X] **Back-end (API):**
 * Criar a entidade base `User` e a hierarquia/permissões (`Role`: ADMIN, CLIENT).
 * Implementar o Spring Security com filtro de geração e validação de tokens JWT.
 * Desenvolver os endpoints genéricos de `/api/auth/login` e `/api/auth/register`.
 
 
-* [ ] **Front-end (Área do Cliente e Painel Admin):**
+* [X] **Front-end (Área do Cliente e Painel Admin):**
 * **[UC01] Cadastrar Conta:** Desenvolver o formulário de cadastro de novos clientes.
 * **[UC02] Fazer Login:** Criar tela de autenticação unificada que redireciona o Cliente para o App e o Admin para o Dashboard.
 * Implementar HTTP Interceptors no Angular para anexar o JWT nas requisições.
@@ -50,12 +50,12 @@ Garantir o acesso seguro separando a Área do Cliente do Painel Administrativo.
 
 Permitir que o administrador configure a base da plataforma e que o cliente possa explorar essas informações.
 
-* [ ] **Back-end (API):**
+* [X] **Back-end (API):**
 * Criar *migrations* e entidades para `BusinessInfo`, `Service`, `Professional`.
 * Desenvolver os endpoints CRUD completos para as informações do local, serviços oferecidos e equipe.
 
 
-* [ ] **Front-end (Painel Admin):**
+* [X] **Front-end (Painel Admin):**
 * **[UC08/09/10] Gerenciar Informações, Serviços e Profissionais:** Criar interfaces para o administrador realizar o CRUD dos dados do negócio, montar o catálogo de serviços e cadastrar os profissionais da equipe.
 
 
