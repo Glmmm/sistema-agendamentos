@@ -35,16 +35,21 @@ public class CatalogoService {
         List<EmpresaResumoDTO> empresasAgendadas = new ArrayList<>();
 
         if (clienteId != null) {
-            realizados = agendamentoRepository.findByClienteIdOrderByDataDescHoraInicioDesc(clienteId).stream().map(a -> new AgendamentoResponseDTO(
-                    a.getId(),
-                    a.getObservacao(),
-                    a.getStatus().name(),
-                    a.getData(),
-                    a.getHoraInicio(),
-                    a.getHoraFim(),
-                    a.getPrecoRegistrado()
-            )).collect(Collectors.toList());
-
+            realizados = agendamentoRepository.findByClienteIdOrderByDataDescHoraInicioDesc(clienteId).stream()
+                    .map(a -> new AgendamentoResponseDTO(
+                            a.getId(),
+                            a.getObservacao(),
+                            a.getProfissional().getEmpresa().getNome(),
+                            a.getTipoServico().getNome(),
+                            a.getProfissional().getNome(),
+                            a.getStatus().name(),
+                            a.getData(),
+                            a.getHoraInicio(),
+                            a.getHoraFim(),
+                            a.getPrecoRegistrado()
+                    ))
+                    .filter(a -> !a.data().isBefore(LocalDate.now()))
+                    .collect(Collectors.toList());
             empresasAgendadas = empresaRepository.findEmpresasOndeClienteAgendou(clienteId).stream().map(e -> new EmpresaResumoDTO(e.getId(), e.getNome(), e.getTelefone(), e.getEndereco())).collect(Collectors.toList());
         }
 
@@ -140,6 +145,9 @@ public class CatalogoService {
         return new AgendamentoResponseDTO(
                 agendamento.getId(),
                 agendamento.getObservacao(),
+                agendamento.getProfissional().getEmpresa().getNome(),
+                agendamento.getTipoServico().getNome(),
+                agendamento.getProfissional().getNome(),
                 agendamento.getStatus().name(),
                 agendamento.getData(),
                 agendamento.getHoraInicio(),

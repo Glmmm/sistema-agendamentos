@@ -4,10 +4,8 @@ import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { AuthHelper } from '../auth.helper';
 import { ButtonModule } from 'primeng/button';
-import { MessageService } from 'primeng/api';
 import { loginForm } from '../models/forms/login.form';
-import { AuthService } from '../../../core/services/auth.service';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-login',

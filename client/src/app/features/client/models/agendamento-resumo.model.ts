@@ -1,10 +1,12 @@
 export interface IAgendamentoResumo {
   id: number;
-  nomeCliente: string;
+  observacao: string;
   nomeEmpresa: string;
-  nomeProfissional: string;
   nomeServico: string;
+  nomeProfissional: string;
+  status: string;
   data: string;
   horaInicio: string;
-  status: string;
+  horaFim: string;
+  precoRegistrado: string;
 }

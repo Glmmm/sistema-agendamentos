@@ -31,7 +31,7 @@ export class PageNotFoundComponent {
 
   public goHome() {
     if (this.store.user()?.type == ERoles.ADMIN) {
-      this.router.navigate(['/admin']);
+      this.router.navigate(['/']);
       return;
     }
     this.router.navigate(['/client']);

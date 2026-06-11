@@ -23,7 +23,7 @@ public class DashboardService {
     public DashboardResponseDTO obterMetricasPainel(Long empresaId) {
         List<Agendamento> agendamentos = agendamentoRepository.findAllByProfissionalEmpresaId(empresaId);
 
-        long pendentes = agendamentos.stream().filter(a -> a.getStatus() == StatusAgendamento.PENDENTE).count();
+        long pendentes = agendamentos.stream().filter(a -> a.getStatus() == StatusAgendamento.PENDENTE).filter(a -> a.getData().isAfter(LocalDate.now()) ).count();
 
         long confirmados = agendamentos.stream().filter(a -> a.getStatus() == StatusAgendamento.CONFIRMADO).count();
 

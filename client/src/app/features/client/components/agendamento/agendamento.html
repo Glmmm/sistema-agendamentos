@@ -1,6 +1,6 @@
-<form [formGroup]="form" class="w-full">
+<form [formGroup]="form" class="w-full max-w-5xl mx-auto p-6">
   <p-stepper [(value)]="activeStep" class="basis-200" [linear]="true">
-    <p-step-list>
+    <p-step-list class="mb-6">
       <p-step [value]="1">Estabelecimento</p-step>
       <p-step [value]="2">Profissional</p-step>
       <p-step [value]="3">Data e Horário</p-step>
@@ -12,17 +12,34 @@
         <ng-template #content>
           <div class="flex flex-col">
             <div>
-              <h2 class="text-xl font-bold mb-4">Selecione o Estabelecimento</h2>
+              <h2 class="text-xl font-bold dark:text-neutral-0 mb-4 flex items-center gap-2">
+                <i class="pi pi-building text-primary"></i>
+                Selecione o Estabelecimento
+              </h2>
               <div class="space-y-3">
                 @for (empresa of empresas(); track empresa.id) {
                   <button
                     type="button"
                     (click)="selecionarEmpresa(empresa.id)"
-                    [class.border-indigo-600]="form.get('empresaId')?.value === empresa.id"
-                    class="w-full text-left p-4 border rounded-lg transition block"
+                    [class.border-primary]="form.get('empresaId')?.value === empresa.id"
+                    [class.shadow-md]="form.get('empresaId')?.value === empresa.id"
+                    class="w-full text-left p-4 bg-neutral-0 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl transition-all duration-200 hover:border-primary group block cursor-pointer"
                   >
-                    <p class="font-bold">{{ empresa.nome }}</p>
-                    <p class="text-sm text-gray-500">{{ empresa.endereco }}</p>
+                    <div class="flex justify-between items-center">
+                      <div>
+                        <p
+                          class="font-bold text-neutral-800 dark:text-neutral-100 group-hover:text-primary transition-colors"
+                        >
+                          {{ empresa.nome }}
+                        </p>
+                        <p class="text-sm text-neutral-500 dark:text-neutral-400">
+                          {{ empresa.endereco }}
+                        </p>
+                      </div>
+                      @if (form.get('empresaId')?.value === empresa.id) {
+                        <i class="pi pi-check-circle text-primary text-lg"></i>
+                      }
+                    </div>
                   </button>
                 }
               </div>
@@ -44,21 +61,31 @@
         <ng-template #content>
           <div class="flex flex-col">
             <div>
-              <h2 class="text-xl font-bold mb-4">Com quem você deseja agendar?</h2>
-              <div class="grid grid-cols-2 gap-4">
+              <h2 class="text-xl font-bold dark:text-neutral-0 mb-4 flex items-center gap-2">
+                <i class="pi pi-user text-primary"></i>
+                Com quem você deseja agendar?
+              </h2>
+              <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                 @for (prof of profissionais(); track prof.id) {
                   <button
                     type="button"
                     (click)="selecionarProfissional(prof.id)"
-                    [class.border-indigo-600]="form.get('profissionalId')?.value === prof.id"
-                    class="p-4 border rounded-lg text-center block bg-transparent cursor-pointer"
+                    [class.border-primary]="form.get('profissionalId')?.value === prof.id"
+                    [class.shadow-md]="form.get('profissionalId')?.value === prof.id"
+                    class="p-4 bg-neutral-0 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl text-center block transition-all duration-200 hover:border-primary group cursor-pointer"
                   >
                     <div
-                      class="w-12 h-12 rounded-full mx-auto mb-2 flex items-center justify-center font-bold bg-gray-100"
+                      [class.bg-primary]="form.get('profissionalId')?.value === prof.id"
+                      [class.text-primary-contrast]="form.get('profissionalId')?.value === prof.id"
+                      class="w-12 h-12 rounded-full mx-auto mb-3 flex items-center justify-center font-bold bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 group-hover:bg-primary group-hover:text-primary-contrast transition-colors"
                     >
                       {{ prof.nome.substring(0, 2).toUpperCase() }}
                     </div>
-                    <p class="font-medium">{{ prof.nome }}</p>
+                    <p
+                      class="font-semibold text-neutral-800 dark:text-neutral-100 group-hover:text-primary transition-colors text-sm truncate"
+                    >
+                      {{ prof.nome }}
+                    </p>
                   </button>
                 }
               </div>
@@ -86,34 +113,43 @@
         <ng-template #content>
           <div class="flex flex-col min-h-48">
             <div>
-              <h2 class="text-xl font-bold mb-4">Escolha o Horário Livre</h2>
+              <h2 class="text-xl font-bold dark:text-neutral-0 mb-4 flex items-center gap-2">
+                <i class="pi pi-calendar text-primary"></i>
+                Escolha o Horário Livre
+              </h2>
 
-              <div class="mb-4">
+              <div class="mb-6">
                 <p-datepicker
                   class="w-full"
                   dateFormat="dd/mm/yy"
                   [minDate]="hoje"
                   placeholder="Selecione uma data"
-                  inputStyleClass="w-full p-2 border rounded"
+                  inputStyleClass="p-3 bg-neutral-0 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl text-neutral-800 dark:text-neutral-100 focus:border-primary"
                   (onSelect)="onDataSelecionada($event)"
                 />
               </div>
 
-              <div class="grid grid-cols-4 gap-2">
+              <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
                 @for (hora of horarios(); track hora) {
                   <button
                     type="button"
                     (click)="selecionarHorario(hora)"
-                    [class.bg-indigo-600]="form.get('horaInicio')?.value === hora"
-                    [class.text-white]="form.get('horaInicio')?.value === hora"
-                    class="p-2 border rounded text-center text-sm hover:text-white transition"
+                    [class.bg-primary]="form.get('horaInicio')?.value === hora"
+                    [class.text-primary-contrast]="form.get('horaInicio')?.value === hora"
+                    [class.border-primary]="form.get('horaInicio')?.value === hora"
+                    class="p-2.5 bg-neutral-0 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg text-center text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:border-primary transition-all duration-200 cursor-pointer"
                   >
                     {{ hora.substring(0, 5) }}
                   </button>
                 } @empty {
-                  <p class="col-span-4 text-gray-400 text-center text-sm py-4">
-                    Selecione uma data válida para listar horários livres.
-                  </p>
+                  <div
+                    class="col-span-full flex flex-col items-center justify-center p-6 text-center bg-neutral-50 dark:bg-neutral-800/30 rounded-xl border border-dashed border-neutral-300 dark:border-neutral-700"
+                  >
+                    <i class="pi pi-clock text-xl text-neutral-400 mb-1"></i>
+                    <p class="text-neutral-500 dark:text-neutral-400 text-sm">
+                      Selecione uma data válida para listar horários livres.
+                    </p>
+                  </div>
                 }
               </div>
             </div>
@@ -137,32 +173,49 @@
         </ng-template>
       </p-step-panel>
 
+      <!-- PASSO 4: SERVIÇO -->
       <p-step-panel [value]="4">
         <ng-template #content>
           <div class="flex flex-col min-h-48">
-            <div>
-              <h2 class="text-xl font-bold mb-4">Selecione o Serviço para Concluir</h2>
+            <div class="space-y-6">
+              <h2 class="text-xl font-bold dark:text-neutral-0 flex items-center gap-2">
+                <i class="pi pi-star text-primary"></i>
+                Selecione o Serviço para Concluir
+              </h2>
+
+              <div class="flex flex-col gap-1.5">
+                <label
+                  for="observacao"
+                  class="text-sm font-medium text-neutral-700 dark:text-neutral-300"
+                  >Observações</label
+                >
+                <textarea
+                  pInputTextarea
+                  class="w-full p-3 bg-neutral-0 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl text-neutral-800 dark:text-neutral-100 focus:border-primary"
+                  placeholder="Adicione qualquer observação que achar importante"
+                  id="observacao"
+                  formControlName="observacao"
+                  rows="3"
+                ></textarea>
+              </div>
+
               <div class="space-y-3">
-                <div>
-                  <label for="observacao">Observações</label>
-                  <input
-                    pInputTextarea
-                    class="w-full"
-                    placeholder="Adicione qualquer observação que achar importante"
-                    id="observacao"
-                    formControlName="observacao"
-                    type="text"
-                  />
-                </div>
                 @for (servico of servicos(); track servico.id) {
-                  <div class="flex justify-between items-center p-4 border rounded-lg">
+                  <div
+                    class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 bg-neutral-0 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl gap-4 shadow-sm"
+                  >
                     <div>
-                      <p class="font-bold">{{ servico.nome }}</p>
-                      <p class="text-sm text-gray-500">{{ servico.descricao }}</p>
+                      <p class="font-bold text-neutral-800 dark:text-neutral-100">
+                        {{ servico.nome }}
+                      </p>
+                      <p class="text-sm text-neutral-500 dark:text-neutral-400">
+                        {{ servico.descricao }}
+                      </p>
                     </div>
                     <p-button
                       label="Reservar por {{ servico.preco | currency: 'BRL' }}"
                       severity="primary"
+                      class="w-full sm:w-auto"
                       (onClick)="finalizarAgendamento(servico)"
                     />
                   </div>

@@ -7,6 +7,9 @@ import java.time.LocalTime;
 public record AgendamentoResponseDTO(
         Long id,
         String observacao,
+        String nomeEmpresa,
+        String nomeServico,
+        String nomeProfissional,
         String status,
         LocalDate data,
         LocalTime horaInicio,

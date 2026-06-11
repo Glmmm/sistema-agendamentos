@@ -5,10 +5,12 @@ import { DatePipe } from '@angular/common';
 import { AuthStore } from '../../../auth/auth.store';
 import { RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
+import { BadgeModule } from 'primeng/badge';
+import { CardModule } from 'primeng/card';
 
 @Component({
   selector: 'app-catalogo',
-  imports: [DatePipe, RouterLink, ButtonModule],
+  imports: [DatePipe, RouterLink, ButtonModule, BadgeModule, CardModule],
   templateUrl: `./catalogo.html`,
 })
 export class CatalogoComponent implements OnInit {

@@ -54,6 +54,7 @@ export const routes: Routes = [
     children: [
       {
         path: '',
+        canActivate: [authGuard, roleGuard],
         loadComponent: () =>
           import('./features/client/components/catalogo/catalogo').then((m) => m.CatalogoComponent),
       },
@@ -67,7 +68,10 @@ export const routes: Routes = [
       },
     ],
   },
-
+  {
+    path: 'home',
+    loadComponent: () => import('./features/home/home').then((m) => m.HomeComponent),
+  },
   {
     path: '**',
     loadComponent: () =>

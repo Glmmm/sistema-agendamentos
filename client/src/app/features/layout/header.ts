@@ -76,12 +76,13 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
         </ng-template>
 
         <div class="flex flex-col gap-6 mt-4">
+          <a routerLink="/home"><i class="pi pi-home"></i> home</a>
           @if (!auth.store.user()) {
             <a routerLink="/auth/login" (click)="visible.set(false)"
               ><i class="pi pi-sign-in"></i> login</a
             >
           } @else {
-            <a routerLink="/admin"><i class="pi pi-home"></i> home</a>
+            <a routerLink="/admin"><i class="pi pi-clock"></i> painel</a>
           }
         </div>
       </p-drawer>
