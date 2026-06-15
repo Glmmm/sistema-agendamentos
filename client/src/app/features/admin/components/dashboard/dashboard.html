@@ -22,21 +22,11 @@
       <p-table [value]="metricas().agendamentosDoDia" responsiveLayout="scroll">
         <ng-template #header>
           <tr class="bg-neutral-50 dark:bg-neutral-800/50">
-            <th class="p-4 text-left font-semibold text-neutral-600 dark:text-neutral-300">
-              Horário
-            </th>
-            <th class="p-4 text-left font-semibold text-neutral-600 dark:text-neutral-300">
-              Serviço
-            </th>
-            <th class="p-4 text-left font-semibold text-neutral-600 dark:text-neutral-300">
-              Cliente
-            </th>
-            <th class="p-4 text-left font-semibold text-neutral-600 dark:text-neutral-300">
-              Profissional
-            </th>
-            <th class="p-4 text-left font-semibold text-neutral-600 dark:text-neutral-300">
-              Status
-            </th>
+            @for (item of ['Horário', 'Serviço', 'Cliente', 'Profissional', 'Status']; track item) {
+              <th class="p-4 text-left font-semibold text-neutral-600 dark:text-neutral-300">
+                {{ item }}
+              </th>
+            }
           </tr>
         </ng-template>
 
@@ -58,7 +48,13 @@
               {{ agendamento.nomeProfissional }}
             </td>
             <td class="p-4 align-middle">
-              <span [appStatusBadge]="agendamento.status"></span>
+              <a
+                [class]="
+                  agendamento.status == 'PENDENTE' ? 'hover:cursor-pointer hover:underline' : ''
+                "
+                (click)="dialogConfirmarAgendamento(agendamento)"
+                [appStatusBadge]="agendamento.status"
+              ></a>
             </td>
           </tr>
         </ng-template>

@@ -23,7 +23,7 @@ public class DashboardService {
     public DashboardResponseDTO obterMetricasPainel(Long empresaId) {
         List<Agendamento> agendamentos = agendamentoRepository.findAllByProfissionalEmpresaId(empresaId);
 
-        long pendentes = agendamentos.stream().filter(a -> a.getStatus() == StatusAgendamento.PENDENTE).filter(a -> a.getData().isAfter(LocalDate.now()) ).count();
+        long pendentes = agendamentos.stream().filter(a -> a.getStatus() == StatusAgendamento.PENDENTE).filter(a -> a.getData().equals(LocalDate.now())).count();
 
         long confirmados = agendamentos.stream().filter(a -> a.getStatus() == StatusAgendamento.CONFIRMADO).count();
 
@@ -44,6 +44,13 @@ public class DashboardService {
         List<AgendamentoResumoDTO> agendamentosDoDia = agendamentos.stream().filter(a -> a.getData() != null && a.getData().equals(hoje)).sorted(Comparator.comparing(Agendamento::getHoraInicio)).map(this::converterParaDTO).collect(Collectors.toList());
 
         return new DashboardResponseDTO(pendentes, confirmados, concluidos, faturamentoAtual, metaArrecadacao, agendamentosDoDia);
+    }
+
+    public void confirmarAgendamento(Long agendamentoId) {
+        Agendamento agendamento = agendamentoRepository.findById(agendamentoId).orElseThrow(() -> new RuntimeException("agendamento não encontrado"));
+
+        agendamento.setStatus(StatusAgendamento.CONFIRMADO);
+        agendamentoRepository.save(agendamento);
     }
 
     private AgendamentoResumoDTO converterParaDTO(Agendamento agendamento) {

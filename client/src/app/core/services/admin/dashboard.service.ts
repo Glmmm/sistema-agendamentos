@@ -11,4 +11,8 @@ export class DashboardService {
   public listarDashboard() {
     return this.http.get<IDashboardResponse>(`${this.apiUrl}`);
   }
+
+  public confirmarAgendamento(agendamentoId: number) {
+    return this.http.post(`${this.apiUrl}/agendamento/${agendamentoId}`, {});
+  }
 }

@@ -5,8 +5,7 @@ import { MenuModule } from 'primeng/menu';
 import { DrawerModule } from 'primeng/drawer';
 import { AccordionModule } from 'primeng/accordion';
 import { AuthHelper } from '../auth/auth.helper';
-import { LoginComponent } from '../auth/components/login';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-header',
   imports: [RouterLink, CardModule, ButtonModule, MenuModule, DrawerModule, AccordionModule],
